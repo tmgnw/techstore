@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechStore — Premium Electronics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f; --bg2: #111118; --bg3: #1a1a26;
+      --surface: #16161f; --surface2: #1e1e2e;
+      --border: rgba(255,255,255,0.07);
+      --accent: #6c63ff; --accent2: #ff6584; --accent3: #43e97b;
+      --text: #e8e8f0; --text2: #9090a8; --text3: #5a5a72;
+      --radius: 16px; --radius-sm: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,15,0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .nav-brand span { color: var(--accent); }
+    .nav-brand .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; list-style: none; }
+    .nav-links a { color: var(--text2); text-decoration: none; padding: 6px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; transition: all 0.2s; cursor: pointer; }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.88rem; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s; }
+    .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface); color: var(--text); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #574fd6; }
+    .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
+    .cart-btn { position: relative; background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+    .cart-btn:hover { background: var(--surface2); }
+    .cart-count { position: absolute; top: -6px; right: -6px; background: var(--accent2); color: #fff; font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .hero { position: relative; overflow: hidden; height: 420px; background: var(--bg2); }
+    .slides { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.77,0,0.18,1); }
+    .slide { min-width: 100%; height: 100%; position: relative; display: flex; align-items: center; }
+    .slide-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.4); }
+    .slide-content { position: relative; z-index: 2; padding: 0 8%; }
+    .slide-tag { display: inline-block; background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 16px; }
+    .slide-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; color: #fff; margin-bottom: 12px; }
+    .slide-sub { color: rgba(255,255,255,0.65); font-size: 1.05rem; margin-bottom: 28px; max-width: 420px; }
+    .hero-controls { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
+    .hero-dot { width: 8px; height: 8px; border-radius: 100px; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; border: none; }
+    .hero-dot.active { background: var(--accent); width: 24px; }
+    .hero-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #fff; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; transition: all 0.2s; z-index: 10; }
+    .hero-arrow:hover { background: var(--accent); border-color: var(--accent); }
+    .hero-arrow.prev { left: 20px; }
+    .hero-arrow.next { right: 20px; }
+
+    .main { display: flex; max-width: 1280px; margin: 0 auto; padding: 40px 2rem; gap: 32px; }
+    .sidebar { width: 220px; flex-shrink: 0; }
+    .sidebar-title { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+    .category-list { list-style: none; }
+    .category-list li a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); color: var(--text2); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: all 0.2s; cursor: pointer; }
+    .category-list li a:hover, .category-list li a.active { background: var(--surface); color: var(--text); }
+    .category-list li a.active { color: var(--accent); }
+
+    .product-section { flex: 1; min-width: 0; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+    .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.3s; position: relative; }
+    .product-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 16px 40px rgba(108,99,255,0.2); }
+    .product-img-wrap { height: 180px; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; cursor: pointer; }
+    .product-badge { position: absolute; top: 10px; left: 10px; background: var(--accent2); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 100px; text-transform: uppercase; }
+    .product-badge.sale { background: var(--accent3); color: #000; }
+    .product-info { padding: 16px; }
+    .product-name { font-weight: 600; font-size: 0.95rem; color: var(--text); margin-bottom: 4px; line-height: 1.3; cursor: pointer; }
+    .product-name:hover { color: var(--accent); }
+    .product-desc { font-size: 0.8rem; color: var(--text3); margin-bottom: 12px; line-height: 1.5; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+    .product-price .old-price { font-size: 0.75rem; color: var(--text3); text-decoration: line-through; font-weight: 400; display: block; font-family: 'DM Sans', sans-serif; }
+    .add-cart-btn { background: var(--accent); border: none; color: #fff; padding: 7px 14px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .add-cart-btn:hover { background: #574fd6; }
+
+    .pagination { display: flex; gap: 8px; margin-top: 32px; justify-content: center; }
+    .page-btn { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); color: var(--text2); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .page-btn:hover, .page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 32px; width: 100%; max-width: 420px; position: relative; animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes modalIn { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .modal-close:hover { background: var(--accent2); color: #fff; }
+    .modal-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: var(--text3); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .modal-switch { text-align: center; margin-top: 16px; font-size: 0.85rem; color: var(--text2); }
+    .modal-switch a { color: var(--accent); cursor: pointer; }
+
+    .toast { position: fixed; bottom: 24px; right: 24px; z-index: 300; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 14px 20px; border-radius: var(--radius-sm); font-size: 0.9rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4); display: none; align-items: center; gap: 10px; }
+    .toast.show { display: flex; }
+
+    .cart-panel { position: fixed; top: 0; right: -420px; z-index: 150; width: 380px; height: 100vh; background: var(--surface2); border-left: 1px solid var(--border); display: flex; flex-direction: column; transition: right 0.35s cubic-bezier(0.77,0,0.18,1); box-shadow: -20px 0 60px rgba(0,0,0,0.4); }
+    .cart-panel.open { right: 0; }
+    .cart-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .cart-header h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .cart-body { flex: 1; overflow-y: auto; padding: 16px 24px; }
+    .cart-empty { text-align: center; padding: 60px 20px; color: var(--text3); }
+    .cart-item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .cart-item-icon { font-size: 2rem; width: 52px; height: 52px; background: var(--bg3); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name { font-weight: 600; font-size: 0.88rem; margin-bottom: 4px; }
+    .cart-item-price { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+    .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .qty-btn { width: 24px; height: 24px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text); cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .qty-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .qty-val { font-size: 0.85rem; font-weight: 600; min-width: 20px; text-align: center; }
+    .cart-item-del { color: var(--text3); background: none; border: none; cursor: pointer; font-size: 1rem; }
+    .cart-item-del:hover { color: var(--accent2); }
+    .cart-footer { padding: 20px 24px; border-top: 1px solid var(--border); }
+    .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-family: 'Syne', sans-serif; font-weight: 700; }
+    .cart-total-amt { font-size: 1.3rem; color: var(--accent); }
+
+    .detail-modal { max-width: 560px; }
+    .detail-img { height: 200px; background: var(--bg3); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 5rem; margin-bottom: 20px; }
+    .detail-price { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+    .detail-desc { color: var(--text2); font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px; }
+    .stars { color: #ffc107; font-size: 0.9rem; margin-bottom: 8px; }
+
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 60px 2rem 32px; margin-top: 40px; }
+    .footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer-brand { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; }
+    .footer-brand span { color: var(--accent); }
+    .footer-tagline { color: var(--text2); font-size: 0.9rem; line-height: 1.6; max-width: 280px; margin-bottom: 20px; }
+    .footer-col-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 8px; }
+    .footer-links a { color: var(--text2); text-decoration: none; font-size: 0.88rem; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-bottom { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text3); font-size: 0.82rem; }
+
+    .user-info { display: flex; align-items: center; gap: 8px; color: var(--text2); font-size: 0.88rem; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+
+    @media (max-width: 900px) { .sidebar { display: none; } .footer-grid { grid-template-columns: 1fr 1fr; } .nav-links { display: none; } }
+    @media (max-width: 600px) { .hero { height: 280px; } .footer-grid { grid-template-columns: 1fr; } .cart-panel { width: 100%; } nav { padding: 0 1rem; } .main { padding: 24px 1rem; } }
+    .fade-in { animation: fadeIn 0.4s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="logo-icon">⚡</div>Tech<span>Store</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="filterCategory('all'); return false;">Home</a></li>
+    <li><a href="#" onclick="openModal('contactModal'); return false;">Contact</a></li>
+    <li><a href="#" onclick="openModal('aboutModal'); return false;">About Us</a></li>
+  </ul>
+  <div class="nav-actions" id="navActions">
+    <button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></button>
+    <button class="btn btn-ghost btn-sm" onclick="openModal('loginModal')">Log in</button>
+    <button class="btn btn-primary btn-sm" onclick="openModal('signupModal')">Sign up</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="slides" id="slides">
+    <div class="slide">
+      <div class="slide-bg" style="background-image: linear-gradient(135deg, #1a1a3e 0%, #0a0a1f 100%);"></div>
+      <div class="slide-content">
+        <span class="slide-tag">🔥 Hot Deal</span>
+        <div class="slide-title">Samsung Galaxy<br>S25 Ultra</div>
+        <div class="slide-sub">Experience next-level AI photography with 200MP camera.</div>
+        <button class="btn btn-primary" onclick="filterCategory('phones')">Shop Phones →</button>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg" style="background-image: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);"></div>
+      <div class="slide-content">
+        <span class="slide-tag">💻 New Arrival</span>
+        <div class="slide-title">MacBook Pro<br>M4 Max</div>
+        <div class="slide-sub">Supercharged for pros. Up to 32-core GPU.</div>
+        <button class="btn btn-primary" onclick="filterCategory('laptops')">Shop Laptops →</button>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg" style="background-image: linear-gradient(135deg, #1a0533 0%, #330066 100%);"></div>
+      <div class="slide-content">
+        <span class="slide-tag">🖥️ Best Seller</span>
+        <div class="slide-title">LG UltraWide<br>4K OLED</div>
+        <div class="slide-sub">Immersive 34" curved display for creators.</div>
+        <button class="btn btn-primary" onclick="filterCategory('monitors')">Shop Monitors →</button>
+      </div>
+    </div>
+  </div>
+  <button class="hero-arrow prev" onclick="moveSlide(-1)">‹</button>
+  <button class="hero-arrow next" onclick="moveSlide(1)">›</button>
+  <div class="hero-controls">
+    <button class="hero-dot active" onclick="goSlide(0)"></button>
+    <button class="hero-dot" onclick="goSlide(1)"></button>
+    <button class="hero-dot" onclick="goSlide(2)"></button>
+  </div>
+</div>
+
+<div class="main">
+  <aside class="sidebar">
+    <div class="sidebar-title">Categories</div>
+    <ul class="category-list">
+      <li><a class="active" onclick="filterCategory('all'); return false;" href="#">🏪 All Products</a></li>
+      <li><a onclick="filterCategory('phones'); return false;" href="#">📱 Phones</a></li>
+      <li><a onclick="filterCategory('laptops'); return false;" href="#">💻 Laptops</a></li>
+      <li><a onclick="filterCategory('monitors'); return false;" href="#">🖥️ Monitors</a></li>
+    </ul>
+  </aside>
+  <section class="product-section">
+    <div class="section-header">
+      <h2 class="section-title" id="sectionTitle">All Products</h2>
+      <span style="color: var(--text3); font-size:0.85rem;" id="productCount"></span>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Tech<span>Store</span></div>
+      <div class="footer-tagline">Your trusted destination for premium electronics in Indonesia.</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Shop</div>
+      <ul class="footer-links">
+        <li><a href="#">All Products</a></li>
+        <li><a href="#">Phones</a></li>
+        <li><a href="#">Laptops</a></li>
+        <li><a href="#">Monitors</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="#">📍 Jakarta, Indonesia</a></li>
+        <li><a href="#">📞 +62 21 1234567</a></li>
+        <li><a href="#">✉️ hello@techstore.id</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 TechStore. All rights reserved.</span>
+    <span>Made with ⚡ for tech lovers</span>
+  </div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <div class="modal-title">👋 Welcome back</div>
+    <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="loginUser" type="text" placeholder="Enter your username"/></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPass" type="password" placeholder="Enter your password"/></div>
+    <div class="modal-actions"><button class="btn btn-primary" style="width:100%" onclick="doLogin()">Log in</button></div>
+    <div class="modal-switch">Don't have an account? <a onclick="switchModal('loginModal','signupModal')">Sign up</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
+    <div class="modal-title">✨ Create Account</div>
+    <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="signupUser" type="text" placeholder="Choose a username"/></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="signupPass" type="password" placeholder="Create a password"/></div>
+    <div class="modal-actions"><button class="btn btn-primary" style="width:100%" onclick="doSignup()">Sign up</button></div>
+    <div class="modal-switch">Already have an account? <a onclick="switchModal('signupModal','loginModal')">Log in</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('contactModal')">✕</button>
+    <div class="modal-title">📬 Get in Touch</div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"/></div>
+    <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Full name"/></div>
+    <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" rows="4" placeholder="How can we help?" style="resize:vertical"></textarea></div>
+    <div class="modal-actions"><button class="btn btn-primary" style="width:100%" onclick="showToast('✅ Message sent!'); closeModal('contactModal')">Send Message</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('aboutModal')">✕</button>
+    <div class="modal-title">About TechStore</div>
+    <p style="color:var(--text2);font-size:0.9rem;line-height:1.7;margin-bottom:12px">TechStore is your trusted destination for premium electronics in Indonesia, serving thousands of customers since 2020.</p>
+    <div style="margin-top:20px;padding:16px;background:var(--bg2);border-radius:var(--radius-sm);font-size:0.85rem;color:var(--text2)">📍 Jl. Sudirman No. 88, Jakarta Pusat<br>📞 +62 21 1234567<br>✉️ hello@techstore.id</div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="detailModal">
+  <div class="modal detail-modal">
+    <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    <div class="detail-img" id="detailImg"></div>
+    <div class="stars">★★★★★</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;" id="detailName"></div>
+    <div class="detail-price" id="detailPrice"></div>
+    <div class="detail-desc" id="detailDesc"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="flex:1" id="detailAddBtn">🛒 Add to Cart</button>
+      <button class="btn btn-ghost" onclick="closeModal('detailModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h3>🛒 Your Cart</h3>
+    <button class="modal-close" style="position:relative;top:0;right:0;" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total"><span>Total</span><span class="cart-total-amt" id="cartTotalAmt"></span></div>
+    <button class="btn btn-primary" style="width:100%" onclick="checkout()">Checkout →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+<div id="cartOverlay" onclick="toggleCart()" style="display:none;position:fixed;inset:0;z-index:140;background:rgba(0,0,0,0.4);"></div>
+
+<script>
+var products = [
+  {id:1,name:'Samsung Galaxy S25 Ultra',category:'phones',price:18999000,oldPrice:21999000,emoji:'📱',badge:'New',desc:'200MP AI camera, 12GB RAM, 512GB storage, 6.9" Dynamic AMOLED 2X display, titanium chassis.'},
+  {id:2,name:'iPhone 16 Pro Max',category:'phones',price:22499000,oldPrice:null,emoji:'🍎',badge:null,desc:'A18 Pro chip, 48MP Fusion camera, Action button, USB-C dengan kecepatan USB 3, layar 6.7" ProMotion.'},
+  {id:3,name:'Google Pixel 9 Pro',category:'phones',price:15999000,oldPrice:17999000,emoji:'🤖',badge:'Sale',desc:'Tensor G4 chip, kamera 50MP dengan AI, 7 tahun pembaruan, pengalaman Android murni.'},
+  {id:4,name:'OnePlus 13',category:'phones',price:11999000,oldPrice:null,emoji:'🔴',badge:null,desc:'Snapdragon 8 Elite, fast charging 100W, kamera Hasselblad, layar 6.82" 120Hz AMOLED.'},
+  {id:5,name:'MacBook Pro 14" M4',category:'laptops',price:29999000,oldPrice:32999000,emoji:'💻',badge:'Hot',desc:'Apple M4 chip, memori 16GB, SSD 512GB, layar Liquid Retina XDR, baterai hingga 24 jam.'},
+  {id:6,name:'Dell XPS 15 OLED',category:'laptops',price:26999000,oldPrice:null,emoji:'🖤',badge:null,desc:'Intel Core Ultra 7, 32GB DDR5, SSD 1TB, layar 15.6" 3.5K OLED touchscreen, RTX 4060.'},
+  {id:7,name:'ASUS ROG Zephyrus G16',category:'laptops',price:24999000,oldPrice:27999000,emoji:'🎮',badge:'Sale',desc:'AMD Ryzen 9, RTX 4080, 32GB RAM, SSD 1TB, layar 16" 2560x1600 240Hz, RGB per-tombol.'},
+  {id:8,name:'Lenovo ThinkPad X1 Carbon',category:'laptops',price:19999000,oldPrice:null,emoji:'⬛',badge:null,desc:'Intel Core i7, 16GB LPDDR5, SSD 512GB, layar 14" 2.8K OLED, ketahanan MIL-SPEC.'},
+  {id:9,name:'LG 34" UltraWide OLED',category:'monitors',price:17999000,oldPrice:19999000,emoji:'🖥️',badge:'New',desc:'Panel OLED 34" 3440x1440, 240Hz, respons 0.03ms, HDR10, USB-C 96W, layar melengkung.'},
+  {id:10,name:'Samsung Odyssey G9 OLED',category:'monitors',price:21999000,oldPrice:null,emoji:'🌊',badge:null,desc:'Monitor gaming OLED 49" dual QHD 240Hz, kurva 1800R, HDR2000, AMD FreeSync Premium Pro.'},
+  {id:11,name:'Dell UltraSharp U2724D',category:'monitors',price:9999000,oldPrice:11999000,emoji:'🎨',badge:'Sale',desc:'IPS 27" 4K, 100% sRGB & DCI-P3, USB-C hub, stand adjustable, untuk pekerjaan kreatif.'},
+  {id:12,name:'BenQ PD3225U ProDesigner',category:'monitors',price:13999000,oldPrice:null,emoji:'✏️',badge:null,desc:'4K HDR 32", validasi Pantone, kalibrasi hardware, USB-C 96W, mode M-Book untuk MacBook.'}
+];
+
+var cart = JSON.parse(localStorage.getItem('tc') || '[]');
+var currentCategory = 'all';
+var currentPage = 1;
+var ITEMS_PER_PAGE = 8;
+var currentSlide = 0;
+var loggedUser = localStorage.getItem('tc_user') || null;
+
+// CAROUSEL
+function moveSlide(dir) {
+  currentSlide = (currentSlide + dir + 3) % 3;
+  updateSlide();
+}
+function goSlide(idx) {
+  currentSlide = idx;
+  updateSlide();
+}
+function updateSlide() {
+  document.getElementById('slides').style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+  var dots = document.querySelectorAll('.hero-dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i === currentSlide);
+  }
+}
+setInterval(function() { moveSlide(1); }, 5000);
+
+// FORMAT PRICE
+function fmt(n) {
+  return 'Rp ' + n.toLocaleString('id-ID');
+}
+
+// FILTER
+function filterCategory(cat) {
+  currentCategory = cat;
+  currentPage = 1;
+  var links = document.querySelectorAll('.category-list a');
+  for (var i = 0; i < links.length; i++) links[i].classList.remove('active');
+  var map = {all:0, phones:1, laptops:2, monitors:3};
+  if (links[map[cat]]) links[map[cat]].classList.add('active');
+  var titles = {all:'All Products', phones:'📱 Phones', laptops:'💻 Laptops', monitors:'🖥️ Monitors'};
+  document.getElementById('sectionTitle').textContent = titles[cat];
+  renderProducts();
+}
+
+// RENDER PRODUCTS
+function renderProducts() {
+  var filtered = currentCategory === 'all' ? products : products.filter(function(p) { return p.category === currentCategory; });
+  var total = filtered.length;
+  var pages = Math.ceil(total / ITEMS_PER_PAGE);
+  var start = (currentPage - 1) * ITEMS_PER_PAGE;
+  var items = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+  document.getElementById('productCount').textContent = total + ' produk';
+  var grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+
+  for (var i = 0; i < items.length; i++) {
+    (function(p) {
+      var card = document.createElement('div');
+      card.className = 'product-card fade-in';
+      card.style.animationDelay = (i * 0.05) + 's';
+
+      var badgeHtml = p.badge ? '<div class="product-badge ' + (p.badge === 'Sale' ? 'sale' : '') + '">' + p.badge + '</div>' : '';
+      var oldPriceHtml = p.oldPrice ? '<span class="old-price">' + fmt(p.oldPrice) + '</span>' : '';
+
+      card.innerHTML =
+        '<div class="product-img-wrap">' +
+          badgeHtml +
+          '<span style="font-size:3.5rem">' + p.emoji + '</span>' +
+        '</div>' +
+        '<div class="product-info">' +
+          '<div class="product-name">' + p.name + '</div>' +
+          '<div class="product-desc">' + p.desc.substring(0, 60) + '...</div>' +
+          '<div class="product-footer">' +
+            '<div class="product-price">' + oldPriceHtml + fmt(p.price) + '</div>' +
+            '<button class="add-cart-btn">+ Cart</button>' +
+          '</div>' +
+        '</div>';
+
+      // TOMBOL + CART — alert langsung di sini
+      card.querySelector('.add-cart-btn').onclick = function() {
+        var existing = null;
+        for (var j = 0; j < cart.length; j++) { if (cart[j].id === p.id) { existing = cart[j]; break; } }
+        if (existing) { existing.qty++; } else { cart.push({id:p.id, name:p.name, price:p.price, emoji:p.emoji, qty:1}); }
+        localStorage.setItem('tc', JSON.stringify(cart));
+        updateCartUI();
+        alert('Product added.');
+      };
+
+      card.querySelector('.product-img-wrap').onclick = function() { openDetail(p.id); };
+      card.querySelector('.product-name').onclick = function() { openDetail(p.id); };
+
+      grid.appendChild(card);
+    })(items[i]);
+  }
+
+  // PAGINATION
+  var pg = document.getElementById('pagination');
+  pg.innerHTML = '';
+  if (pages > 1) {
+    var prev = document.createElement('button');
+    prev.className = 'page-btn'; prev.textContent = '‹';
+    prev.onclick = function() { if (currentPage > 1) { currentPage--; renderProducts(); window.scrollTo({top:300,behavior:'smooth'}); } };
+    pg.appendChild(prev);
+    for (var p = 1; p <= pages; p++) {
+      (function(pg_num) {
+        var b = document.createElement('button');
+        b.className = 'page-btn' + (pg_num === currentPage ? ' active' : '');
+        b.textContent = pg_num;
+        b.onclick = function() { currentPage = pg_num; renderProducts(); window.scrollTo({top:300,behavior:'smooth'}); };
+        pg.appendChild(b);
+      })(p);
+    }
+    var next = document.createElement('button');
+    next.className = 'page-btn'; next.textContent = '›';
+    next.onclick = function() { if (currentPage < pages) { currentPage++; renderProducts(); window.scrollTo({top:300,behavior:'smooth'}); } };
+    pg.appendChild(next);
+  }
+}
+
+// CART UI
+function updateCartUI() {
+  var total = 0;
+  for (var i = 0; i < cart.length; i++) total += cart[i].qty;
+  var countEl = document.getElementById('cartCount');
+  if (countEl) countEl.textContent = total;
+
+  var body = document.getElementById('cartBody');
+  var footer = document.getElementById('cartFooter');
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="cart-empty"><div style="font-size:3rem">🛒</div><div>Keranjang kosong</div></div>';
+    footer.style.display = 'none';
+  } else {
+    var html = '';
+    var grandTotal = 0;
+    for (var i = 0; i < cart.length; i++) {
+      var item = cart[i];
+      grandTotal += item.price * item.qty;
+      html += '<div class="cart-item">' +
+        '<div class="cart-item-icon">' + item.emoji + '</div>' +
+        '<div class="cart-item-info">' +
+          '<div class="cart-item-name">' + item.name + '</div>' +
+          '<div class="cart-item-price">' + fmt(item.price) + '</div>' +
+          '<div class="cart-item-qty">' +
+            '<button class="qty-btn" onclick="changeQty(' + item.id + ',-1)">−</button>' +
+            '<span class="qty-val">' + item.qty + '</span>' +
+            '<button class="qty-btn" onclick="changeQty(' + item.id + ',1)">+</button>' +
+          '</div>' +
+        '</div>' +
+        '<button class="cart-item-del" onclick="removeCart(' + item.id + ')">🗑</button>' +
+      '</div>';
+    }
+    body.innerHTML = html;
+    document.getElementById('cartTotalAmt').textContent = fmt(grandTotal);
+    footer.style.display = 'block';
+  }
+}
+
+function changeQty(id, delta) {
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id === id) { cart[i].qty += delta; if (cart[i].qty <= 0) { cart.splice(i, 1); } break; }
+  }
+  localStorage.setItem('tc', JSON.stringify(cart));
+  updateCartUI();
+}
+function removeCart(id) {
+  cart = cart.filter(function(x) { return x.id !== id; });
+  localStorage.setItem('tc', JSON.stringify(cart));
+  updateCartUI();
+}
+function toggleCart() {
+  var panel = document.getElementById('cartPanel');
+  var overlay = document.getElementById('cartOverlay');
+  var open = panel.classList.toggle('open');
+  overlay.style.display = open ? 'block' : 'none';
+}
+function checkout() {
+  if (!loggedUser) { toggleCart(); setTimeout(function() { openModal('loginModal'); }, 300); return; }
+  alert('Order placed! Thank you for shopping at TechStore.');
+  cart = []; localStorage.setItem('tc', JSON.stringify(cart)); updateCartUI();
+  toggleCart();
+}
+
+// DETAIL MODAL
+function openDetail(id) {
+  var p = null;
+  for (var i = 0; i < products.length; i++) { if (products[i].id === id) { p = products[i]; break; } }
+  document.getElementById('detailImg').textContent = p.emoji;
+  document.getElementById('detailName').textContent = p.name;
+  document.getElementById('detailPrice').textContent = fmt(p.price);
+  document.getElementById('detailDesc').textContent = p.desc;
+
+  // TOMBOL ADD TO CART DI DETAIL — alert langsung
+  document.getElementById('detailAddBtn').onclick = function() {
+    var existing = null;
+    for (var j = 0; j < cart.length; j++) { if (cart[j].id === p.id) { existing = cart[j]; break; } }
+    if (existing) { existing.qty++; } else { cart.push({id:p.id, name:p.name, price:p.price, emoji:p.emoji, qty:1}); }
+    localStorage.setItem('tc', JSON.stringify(cart));
+    updateCartUI();
+    closeModal('detailModal');
+    alert('Product added.');
+  };
+
+  openModal('detailModal');
+}
+
+// AUTH
+function doLogin() {
+  var u = document.getElementById('loginUser').value.trim();
+  var pw = document.getElementById('loginPass').value;
+  if (!u || !pw) { showToast('⚠️ Isi semua field.'); return; }
+  var users = JSON.parse(localStorage.getItem('tc_users') || '{}');
+  if (users[u] && users[u] === pw) {
+    loggedUser = u; localStorage.setItem('tc_user', u);
+    closeModal('loginModal'); updateAuthUI(); showToast('👋 Selamat datang, ' + u + '!');
+  } else { showToast('❌ Username atau password salah.'); }
+}
+function doSignup() {
+  var u = document.getElementById('signupUser').value.trim();
+  var pw = document.getElementById('signupPass').value;
+  if (!u || !pw) { showToast('⚠️ Isi semua field.'); return; }
+  var users = JSON.parse(localStorage.getItem('tc_users') || '{}');
+  if (users[u]) { showToast('❌ Username sudah ada.'); return; }
+  users[u] = pw; localStorage.setItem('tc_users', JSON.stringify(users));
+  loggedUser = u; localStorage.setItem('tc_user', u);
+  closeModal('signupModal'); updateAuthUI(); showToast('🎉 Akun berhasil dibuat, ' + u + '!');
+}
+function doLogout() {
+  loggedUser = null; localStorage.removeItem('tc_user'); updateAuthUI(); showToast('👋 Berhasil logout.');
+}
+function updateAuthUI() {
+  var actions = document.getElementById('navActions');
+  var cnt = 0; for (var i = 0; i < cart.length; i++) cnt += cart[i].qty;
+  if (loggedUser) {
+    actions.innerHTML =
+      '<button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">' + cnt + '</span></button>' +
+      '<div class="user-info"><div class="user-avatar">' + loggedUser[0].toUpperCase() + '</div><span>' + loggedUser + '</span></div>' +
+      '<button class="btn btn-ghost btn-sm" onclick="doLogout()">Log out</button>';
+  } else {
+    actions.innerHTML =
+      '<button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">' + cnt + '</span></button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="openModal(\'loginModal\')">Log in</button>' +
+      '<button class="btn btn-primary btn-sm" onclick="openModal(\'signupModal\')">Sign up</button>';
+  }
+}
+
+// MODAL
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function switchModal(a, b) { closeModal(a); openModal(b); }
+document.querySelectorAll('.modal-overlay').forEach(function(el) {
+  el.addEventListener('click', function(e) { if (e.target === el) closeModal(el.id); });
+});
+
+// TOAST
+var toastTimer;
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// INIT
+if (loggedUser) updateAuthUI();
+renderProducts();
+updateCartUI();
+</script>
+</body>
+</html>
