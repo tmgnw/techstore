@@ -199,19 +199,8 @@
     .order-submit-btn { flex: 2; padding: 13px; background: var(--accent); border: none; color: #fff; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
     .order-submit-btn:hover { background: #574fd6; }
 
-    /* COLOR PICKER */
+    /* COLOR PICKER - detail modal */
     .color-picker-label { font-size: 0.82rem; font-weight: 600; color: var(--text2); margin: 14px 0 10px; display: block; letter-spacing: 0.04em; text-transform: uppercase; }
-    /* Card inline color picker */
-    .card-color-row { display: flex; align-items: center; gap: 7px; margin: 10px 0 8px; }
-    .card-color-title { font-size: 0.72rem; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-    .card-color-opt { display: flex; align-items: center; }
-    .card-color-opt input[type="radio"] { display: none; }
-    .card-color-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; outline: 2px solid transparent; outline-offset: 1px; cursor: pointer; transition: all 0.18s; }
-    .card-color-opt input[type="radio"]:checked + .card-color-dot { outline: 2px solid var(--accent); transform: scale(1.2); }
-    .card-color-dot.red   { background: #e74c3c; border-color: #c0392b; }
-    .card-color-dot.white { background: #f0f0f0; border-color: #bbb; }
-    .card-color-dot.black { background: #1a1a1a; border-color: #555; }
-    .card-color-dot.blue  { background: #2980b9; border-color: #1a5c8a; }
     .color-options { display: flex; gap: 12px; margin-bottom: 16px; }
     .color-option { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
     .color-option input[type="radio"] { display: none; }
@@ -222,13 +211,22 @@
     .color-swatch.black { background: #1a1a1a; border-color: #555; }
     .color-swatch.blue  { background: #2980b9; border-color: #1a5c8a; }
     .color-name { font-size: 0.68rem; color: var(--text3); font-weight: 500; }
-
-    /* CART FOOTER UPDATED */
+    /* COLOR PICKER - product card */
+    .card-color-row { display: flex; align-items: center; gap: 7px; margin: 10px 0 8px; }
+    .card-color-title { font-size: 0.72rem; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+    .card-color-opt { display: flex; align-items: center; }
+    .card-color-opt input[type="radio"] { display: none; }
+    .card-color-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; outline: 2px solid transparent; outline-offset: 1px; cursor: pointer; transition: all 0.18s; }
+    .card-color-opt input[type="radio"]:checked + .card-color-dot { outline: 2px solid var(--accent); transform: scale(1.2); }
+    .card-color-dot.red   { background: #e74c3c; border-color: #c0392b; }
+    .card-color-dot.white { background: #f0f0f0; border-color: #bbb; }
+    .card-color-dot.black { background: #1a1a1a; border-color: #555; }
+    .card-color-dot.blue  { background: #2980b9; border-color: #1a5c8a; }
+    /* CART */
     .cart-grand-total { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
     .cart-total-label { font-size: 0.82rem; color: var(--text2); margin-bottom: 4px; display: block; }
     .place-order-btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 12px; }
     .place-order-btn:hover { background: #574fd6; transform: translateY(-1px); }
-
     /* ORDER MODAL */
     .order-modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; }
     .order-modal-overlay.open { display: flex; }
@@ -261,90 +259,92 @@
     .order-cancel-btn:hover { background: rgba(255,255,255,0.05); }
     .order-submit-btn { flex: 2; padding: 13px; background: var(--accent); border: none; color: #fff; border-radius: 10px; font-family: 'DM Sans',sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
     .order-submit-btn:hover { background: #574fd6; }
+    .user-info { display: flex; align-items: center; gap: 8px; color: var(--text2); font-size: 0.88rem; }
+    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-brand" href="#">
-    <div class="logo-icon">⚡</div>Tech<span>Store</span>
+  <a class="nav-brand" id="nav-brand" href="#">
+    <div class="logo-icon" id="nav-logo">⚡</div>Tech<span>Store</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="filterCategory('all'); return false;">Home</a></li>
-    <li><a href="#" onclick="openModal('contactModal'); return false;">Contact</a></li>
-    <li><a href="#" onclick="openModal('aboutModal'); return false;">About Us</a></li>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#" id="nav-link-home" onclick="filterCategory('all'); return false;">Home</a></li>
+    <li><a href="#" id="nav-link-contact" onclick="openModal('modal-contact'); return false;">Contact</a></li>
+    <li><a href="#" id="nav-link-about" onclick="openModal('modal-about'); return false;">About Us</a></li>
   </ul>
-  <div class="nav-actions" id="navActions">
-    <button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></button>
-    <button class="btn btn-ghost btn-sm" onclick="openModal('loginModal')">Log in</button>
-    <button class="btn btn-primary btn-sm" onclick="openModal('signupModal')">Sign up</button>
+  <div class="nav-actions" id="nav-actions">
+    <button class="cart-btn" id="btn-cart" onclick="toggleCart()">🛒<span class="cart-count" id="cart-count">0</span></button>
+    <button class="btn btn-ghost btn-sm" id="btn-login" onclick="openModal('modal-login')">Log in</button>
+    <button class="btn btn-primary btn-sm" id="btn-signup" onclick="openModal('modal-signup')">Sign up</button>
   </div>
 </nav>
 
-<div class="hero">
+<div class="hero" id="hero-section">
   <div class="slides" id="slides">
-    <div class="slide">
+    <div class="slide" id="slide-1">
       <div class="slide-bg" style="background-image: linear-gradient(135deg, #1a1a3e 0%, #0a0a1f 100%);"></div>
-      <div class="slide-content">
-        <span class="slide-tag">🔥 Hot Deal</span>
-        <div class="slide-title">Samsung Galaxy<br>S25 Ultra</div>
-        <div class="slide-sub">Experience next-level AI photography with 200MP camera.</div>
-        <button class="btn btn-primary" onclick="filterCategory('phones')">Shop Phones →</button>
+      <div class="slide-content" id="slide-1-content">
+        <span class="slide-tag" id="slide-1-tag">🔥 Hot Deal</span>
+        <div class="slide-title" id="slide-1-title">Samsung Galaxy<br>S25 Ultra</div>
+        <div class="slide-sub" id="slide-1-sub">Experience next-level AI photography with 200MP camera.</div>
+        <button class="btn btn-primary" id="slide-1-btn" onclick="filterCategory('phones')">Shop Phones →</button>
       </div>
     </div>
-    <div class="slide">
+    <div class="slide" id="slide-2">
       <div class="slide-bg" style="background-image: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);"></div>
-      <div class="slide-content">
-        <span class="slide-tag">💻 New Arrival</span>
-        <div class="slide-title">MacBook Pro<br>M4 Max</div>
-        <div class="slide-sub">Supercharged for pros. Up to 32-core GPU.</div>
-        <button class="btn btn-primary" onclick="filterCategory('laptops')">Shop Laptops →</button>
+      <div class="slide-content" id="slide-2-content">
+        <span class="slide-tag" id="slide-2-tag">💻 New Arrival</span>
+        <div class="slide-title" id="slide-2-title">MacBook Pro<br>M4 Max</div>
+        <div class="slide-sub" id="slide-2-sub">Supercharged for pros. Up to 32-core GPU.</div>
+        <button class="btn btn-primary" id="slide-2-btn" onclick="filterCategory('laptops')">Shop Laptops →</button>
       </div>
     </div>
-    <div class="slide">
+    <div class="slide" id="slide-3">
       <div class="slide-bg" style="background-image: linear-gradient(135deg, #1a0533 0%, #330066 100%);"></div>
-      <div class="slide-content">
-        <span class="slide-tag">🖥️ Best Seller</span>
-        <div class="slide-title">LG UltraWide<br>4K OLED</div>
-        <div class="slide-sub">Immersive 34" curved display for creators.</div>
-        <button class="btn btn-primary" onclick="filterCategory('monitors')">Shop Monitors →</button>
+      <div class="slide-content" id="slide-3-content">
+        <span class="slide-tag" id="slide-3-tag">🖥️ Best Seller</span>
+        <div class="slide-title" id="slide-3-title">LG UltraWide<br>4K OLED</div>
+        <div class="slide-sub" id="slide-3-sub">Immersive 34" curved display for creators.</div>
+        <button class="btn btn-primary" id="slide-3-btn" onclick="filterCategory('monitors')">Shop Monitors →</button>
       </div>
     </div>
   </div>
-  <button class="hero-arrow prev" onclick="moveSlide(-1)">‹</button>
-  <button class="hero-arrow next" onclick="moveSlide(1)">›</button>
-  <div class="hero-controls">
-    <button class="hero-dot active" onclick="goSlide(0)"></button>
-    <button class="hero-dot" onclick="goSlide(1)"></button>
-    <button class="hero-dot" onclick="goSlide(2)"></button>
+  <button class="hero-arrow prev" id="btn-slide-prev" onclick="moveSlide(-1)">‹</button>
+  <button class="hero-arrow next" id="btn-slide-next" onclick="moveSlide(1)">›</button>
+  <div class="hero-controls" id="hero-controls">
+    <button class="hero-dot active" id="hero-dot-1" onclick="goSlide(0)"></button>
+    <button class="hero-dot" id="hero-dot-2" onclick="goSlide(1)"></button>
+    <button class="hero-dot" id="hero-dot-3" onclick="goSlide(2)"></button>
   </div>
 </div>
 
-<div class="main">
-  <aside class="sidebar">
-    <div class="sidebar-title">Categories</div>
-    <ul class="category-list">
-      <li><a class="active" onclick="filterCategory('all'); return false;" href="#">🏪 All Products</a></li>
-      <li><a onclick="filterCategory('phones'); return false;" href="#">📱 Phones</a></li>
-      <li><a onclick="filterCategory('laptops'); return false;" href="#">💻 Laptops</a></li>
-      <li><a onclick="filterCategory('monitors'); return false;" href="#">🖥️ Monitors</a></li>
+<div class="main" id="main-content">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title" id="sidebar-title">Categories</div>
+    <ul class="category-list" id="category-list">
+      <li><a class="active" id="cat-all" onclick="filterCategory('all'); return false;" href="#">🏪 All Products</a></li>
+      <li><a id="cat-phones" onclick="filterCategory('phones'); return false;" href="#">📱 Phones</a></li>
+      <li><a id="cat-laptops" onclick="filterCategory('laptops'); return false;" href="#">💻 Laptops</a></li>
+      <li><a id="cat-monitors" onclick="filterCategory('monitors'); return false;" href="#">🖥️ Monitors</a></li>
     </ul>
   </aside>
-  <section class="product-section">
-    <div class="section-header">
-      <h2 class="section-title" id="sectionTitle">All Products</h2>
-      <span style="color: var(--text3); font-size:0.85rem;" id="productCount"></span>
+  <section class="product-section" id="product-section">
+    <div class="section-header" id="section-header">
+      <h2 class="section-title" id="section-title">All Products</h2>
+      <span style="color: var(--text3); font-size:0.85rem;" id="product-count"></span>
     </div>
-    <div class="product-grid" id="productGrid"></div>
+    <div class="product-grid" id="product-grid"></div>
     <div class="pagination" id="pagination"></div>
   </section>
 </div>
 
-<footer>
-  <div class="footer-grid">
+<footer id="footer">
+  <div class="footer-grid" id="footer-grid">
     <div>
-      <div class="footer-brand">Tech<span>Store</span></div>
-      <div class="footer-tagline">Your trusted destination for premium electronics in Indonesia.</div>
+      <div class="footer-brand" id="footer-brand">Tech<span>Store</span></div>
+      <div class="footer-tagline" id="footer-tagline">Your trusted destination for premium electronics in Indonesia.</div>
     </div>
     <div>
       <div class="footer-col-title">Shop</div>
@@ -373,122 +373,122 @@
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
+  <div class="footer-bottom" id="footer-bottom">
     <span>© 2026 TechStore. All rights reserved.</span>
     <span>Made with ⚡ for tech lovers</span>
   </div>
 </footer>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="loginModal">
+<div class="modal-overlay" id="modal-login">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
-    <div class="modal-title">👋 Welcome back</div>
-    <div style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:0.82rem;color:var(--text2);line-height:1.8;">
+    <button class="modal-close" id="btn-login-close" onclick="closeModal('modal-login')">✕</button>
+    <div class="modal-title" id="login-title">👋 Welcome back</div>
+    <div id="login-demo-info" style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.3);border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:0.82rem;color:var(--text2);line-height:1.8;">
       🧪 <strong style="color:var(--text)">Akun Demo Tersedia</strong><br>
-      Username: <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--accent)">admin</code>
+      Username: <code id="demo-username" style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--accent)">admin</code>
       &nbsp;·&nbsp;
-      Password: <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--accent)">admin123</code><br>
-      <a onclick="fillDemo()" style="color:var(--accent3);cursor:pointer;font-weight:600;text-decoration:underline;">→ Klik untuk isi otomatis</a>
+      Password: <code id="demo-password" style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--accent)">admin123</code><br>
+      <a id="link-fill-demo" onclick="fillDemo()" style="color:var(--accent3);cursor:pointer;font-weight:600;text-decoration:underline;">→ Klik untuk isi otomatis</a>
     </div>
-    <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="loginUser" type="text" placeholder="Enter your username"/></div>
-    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="loginPass" type="password" placeholder="Enter your password"/></div>
-    <div class="modal-actions"><button class="btn btn-primary" style="width:100%" onclick="doLogin()">Log in</button></div>
-    <div class="modal-switch">Don't have an account? <a onclick="switchModal('loginModal','signupModal')">Sign up</a></div>
+    <div class="form-group" id="login-field-username"><label class="form-label" for="input-login-username">Username</label><input class="form-input" id="input-login-username" name="input-login-username" type="text" placeholder="Enter your username"/></div>
+    <div class="form-group" id="login-field-password"><label class="form-label" for="input-login-password">Password</label><input class="form-input" id="input-login-password" name="input-login-password" type="password" placeholder="Enter your password"/></div>
+    <div class="modal-actions" id="login-actions"><button class="btn btn-primary" id="btn-login-submit" style="width:100%" onclick="doLogin()">Log in</button></div>
+    <div class="modal-switch" id="login-switch">Don't have an account? <a id="link-goto-signup" onclick="switchModal('modal-login','modal-signup')">Sign up</a></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="signupModal">
+<div class="modal-overlay" id="modal-signup">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
-    <div class="modal-title">✨ Create Account</div>
-    <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="signupUser" type="text" placeholder="Choose a username"/></div>
-    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="signupPass" type="password" placeholder="Create a password"/></div>
-    <div class="modal-actions"><button class="btn btn-primary" style="width:100%" onclick="doSignup()">Sign up</button></div>
-    <div class="modal-switch">Already have an account? <a onclick="switchModal('signupModal','loginModal')">Log in</a></div>
+    <button class="modal-close" id="btn-signup-close" onclick="closeModal('modal-signup')">✕</button>
+    <div class="modal-title" id="signup-title">✨ Create Account</div>
+    <div class="form-group" id="signup-field-username"><label class="form-label" for="input-signup-username">Username</label><input class="form-input" id="input-signup-username" name="input-signup-username" type="text" placeholder="Choose a username"/></div>
+    <div class="form-group" id="signup-field-password"><label class="form-label" for="input-signup-password">Password</label><input class="form-input" id="input-signup-password" name="input-signup-password" type="password" placeholder="Create a password"/></div>
+    <div class="modal-actions" id="signup-actions"><button class="btn btn-primary" id="btn-signup-submit" style="width:100%" onclick="doSignup()">Sign up</button></div>
+    <div class="modal-switch" id="signup-switch">Already have an account? <a id="link-goto-login" onclick="switchModal('modal-signup','modal-login')">Log in</a></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="contactModal">
+<div class="modal-overlay" id="modal-contact">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('contactModal')">✕</button>
-    <div class="modal-title">📬 Get in Touch</div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"/></div>
-    <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Full name"/></div>
-    <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" rows="4" placeholder="How can we help?" style="resize:vertical"></textarea></div>
-    <div class="modal-actions"><button class="btn btn-primary" style="width:100%" onclick="showToast('✅ Message sent!'); closeModal('contactModal')">Send Message</button></div>
+    <button class="modal-close" id="btn-contact-close" onclick="closeModal('modal-contact')">✕</button>
+    <div class="modal-title" id="contact-title">📬 Get in Touch</div>
+    <div class="form-group" id="contact-field-email"><label class="form-label" for="contactEmail">Email</label><input class="form-input" id="contactEmail" name="contactEmail" type="email" placeholder="your@email.com"/></div>
+    <div class="form-group" id="contact-field-name"><label class="form-label" for="contactName">Name</label><input class="form-input" id="contactName" name="contactName" type="text" placeholder="Full name"/></div>
+    <div class="form-group" id="contact-field-message"><label class="form-label" for="contactMessage">Message</label><textarea class="form-input" id="contactMessage" name="contactMessage" rows="4" placeholder="How can we help?" style="resize:vertical"></textarea></div>
+    <div class="modal-actions" id="contact-actions"><button class="btn btn-primary" id="btn-contact-submit" style="width:100%" onclick="showToast('✅ Message sent!'); closeModal('modal-contact')">Send Message</button></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="aboutModal">
+<div class="modal-overlay" id="modal-about">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('aboutModal')">✕</button>
-    <div class="modal-title">About TechStore</div>
+    <button class="modal-close" id="btn-about-close" onclick="closeModal('modal-about')">✕</button>
+    <div class="modal-title" id="about-title">About TechStore</div>
     <p style="color:var(--text2);font-size:0.9rem;line-height:1.7;margin-bottom:12px">TechStore is your trusted destination for premium electronics in Indonesia, serving thousands of customers since 2020.</p>
     <div style="margin-top:20px;padding:16px;background:var(--bg2);border-radius:var(--radius-sm);font-size:0.85rem;color:var(--text2)">📍 Jl. Sudirman No. 88, Jakarta Pusat<br>📞 +62 21 1234567<br>✉️ hello@techstore.id</div>
   </div>
 </div>
 
-<div class="modal-overlay" id="detailModal">
+<div class="modal-overlay" id="modal-detail">
   <div class="modal detail-modal">
-    <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
-    <div class="detail-img" id="detailImg"></div>
-    <div class="stars">★★★★★</div>
-    <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;" id="detailName"></div>
-    <div class="detail-price" id="detailPrice"></div>
-    <div class="detail-desc" id="detailDesc"></div>
-    <span class="color-picker-label">Pilih Warna</span>
-    <div class="color-options">
-      <label class="color-option"><input type="radio" name="productColor" value="Merah"><div class="color-swatch red"></div><span class="color-name">Merah</span></label>
-      <label class="color-option"><input type="radio" name="productColor" value="Putih"><div class="color-swatch white"></div><span class="color-name">Putih</span></label>
-      <label class="color-option"><input type="radio" name="productColor" value="Hitam"><div class="color-swatch black"></div><span class="color-name">Hitam</span></label>
-      <label class="color-option"><input type="radio" name="productColor" value="Biru"><div class="color-swatch blue"></div><span class="color-name">Biru</span></label>
+    <button class="modal-close" id="btn-detail-close" onclick="closeModal('modal-detail')">✕</button>
+    <div class="detail-img" id="detail-img"></div>
+    <div class="stars" id="detail-stars">★★★★★</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;" id="detail-name"></div>
+    <div class="detail-price" id="detail-price"></div>
+    <div class="detail-desc" id="detail-desc"></div>
+    <span class="color-picker-label" id="detail-color-label">Pilih Warna</span>
+    <div class="color-options" id="detail-color-options">
+      <label class="color-option" id="detail-color-opt-merah"><input type="radio" id="color-merah" name="productColor" value="Merah"><div class="color-swatch red"></div><span class="color-name">Merah</span></label>
+      <label class="color-option" id="detail-color-opt-putih"><input type="radio" id="color-putih" name="productColor" value="Putih"><div class="color-swatch white"></div><span class="color-name">Putih</span></label>
+      <label class="color-option" id="detail-color-opt-hitam"><input type="radio" id="color-hitam" name="productColor" value="Hitam"><div class="color-swatch black"></div><span class="color-name">Hitam</span></label>
+      <label class="color-option" id="detail-color-opt-biru"><input type="radio" id="color-biru" name="productColor" value="Biru"><div class="color-swatch blue"></div><span class="color-name">Biru</span></label>
     </div>
-    <div class="modal-actions">
-      <button class="btn btn-primary" style="flex:1" id="detailAddBtn">🛒 Add to Cart</button>
-      <button class="btn btn-ghost" onclick="closeModal('detailModal')">Close</button>
+    <div class="modal-actions" id="detail-actions">
+      <button class="btn btn-primary" style="flex:1" id="detail-btn-add-cart">🛒 Add to Cart</button>
+      <button class="btn btn-ghost" id="detail-btn-close" onclick="closeModal('modal-detail')">Close</button>
     </div>
   </div>
 </div>
 
-<div class="cart-panel" id="cartPanel">
-  <div class="cart-header">
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header" id="cart-header">
     <h3>🛒 Your Cart</h3>
-    <button class="modal-close" style="position:relative;top:0;right:0;" onclick="toggleCart()">✕</button>
+    <button class="modal-close" id="btn-cart-close" style="position:relative;top:0;right:0;" onclick="toggleCart()">✕</button>
   </div>
-  <div class="cart-body" id="cartBody"></div>
-  <div class="cart-footer" id="cartFooter" style="display:none">
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
     <div class="cart-total-row">
-      <span class="cart-total-label">Total</span>
+      <span class="cart-total-label" id="cart-total-label">Total</span>
     </div>
-    <div class="cart-grand-total" id="cartTotalAmt"></div>
-    <button class="place-order-btn" onclick="openOrderModal()">Place Order →</button>
+    <div class="cart-grand-total" id="cart-total-amt"></div>
+    <button class="place-order-btn" id="btn-place-order" onclick="openOrderModal()">Place Order →</button>
   </div>
 </div>
 
-<div class="toast" id="toast"><span id="toastMsg"></span></div>
-<div id="cartOverlay" onclick="toggleCart()" style="display:none;position:fixed;inset:0;z-index:140;background:rgba(0,0,0,0.4);"></div>
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+<div id="cart-overlay" onclick="toggleCart()" style="display:none;position:fixed;inset:0;z-index:140;background:rgba(0,0,0,0.4);"></div>
 
 <!-- ORDER MODAL -->
-<div class="order-modal-overlay" id="orderModal">
+<div class="order-modal-overlay" id="modal-order">
   <div class="order-modal">
-    <button class="order-modal-close" onclick="closeOrderModal()">✕</button>
-    <div class="order-check-icon">
+    <button class="order-modal-close" id="btn-order-close" onclick="closeOrderModal()">✕</button>
+    <div class="order-check-icon" id="order-check-icon">
       <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="18" cy="18" r="18" fill="#1a5c3a"/>
         <path d="M10 18L15.5 23.5L26 13" stroke="#2ecc71" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
     <h2>Place Your Order</h2>
-    <div class="order-modal-sub">Please fill in your details to complete your order.</div>
+    <div class="order-modal-sub" id="order-modal-sub">Please fill in your details to complete your order.</div>
 
     <div class="order-input-wrap">
       <span class="order-input-icon">👤</span>
-      <input class="order-input" id="orderName" type="text" placeholder="Name" maxlength="100" />
+      <input class="order-input" id="order-name" name="orderName" type="text" placeholder="Name" maxlength="100" />
     </div>
     <div class="order-input-wrap">
       <span class="order-input-icon">🌍</span>
-      <select class="order-input" id="orderCountry" style="appearance:none;cursor:pointer" onchange="updateCities()">
+      <select class="order-input" id="order-country" name="orderCountry" style="appearance:none;cursor:pointer" onchange="updateCities()">
           <option value="" disabled selected>Select Country</option>
           <option value="Afghanistan">Afghanistan</option>
           <option value="Albania">Albania</option>
@@ -688,18 +688,18 @@
     </div>
     <div class="order-input-wrap">
       <span class="order-input-icon">🏙️</span>
-      <select class="order-input" id="orderCity" style="appearance:none;cursor:pointer">
+      <select class="order-input" id="order-city" name="orderCity" style="appearance:none;cursor:pointer">
           <option value="" disabled selected>Select City</option>
       </select>
     </div>
     <div class="order-input-wrap">
       <span class="order-input-icon">💳</span>
-      <input class="order-input" id="orderCard" type="text" placeholder="0000-0000-0000-0000" maxlength="19" inputmode="numeric" />
+      <input class="order-input" id="order-card" name="orderCard" type="text" placeholder="0000-0000-0000-0000" maxlength="19" inputmode="numeric" />
     </div>
     <div style="display:flex;gap:10px;">
       <div class="order-input-wrap" style="flex:1">
         <span class="order-input-icon" style="top:50%;transform:translateY(-50%)">📅</span>
-        <select class="order-input" id="orderMonth" style="appearance:none;cursor:pointer">
+        <select class="order-input" id="order-month" name="orderMonth" style="appearance:none;cursor:pointer">
         <option value="" disabled selected>Month</option>
         <option value="01">January</option>
         <option value="02">February</option>
@@ -717,7 +717,7 @@
       </div>
       <div class="order-input-wrap" style="flex:1">
         <span class="order-input-icon" style="top:50%;transform:translateY(-50%)">📅</span>
-        <select class="order-input" id="orderYear" style="appearance:none;cursor:pointer">
+        <select class="order-input" id="order-year" name="orderYear" style="appearance:none;cursor:pointer">
         <option value="" disabled selected>Year</option>
         <option value="2026">2026</option>
         <option value="2025">2025</option>
@@ -805,16 +805,16 @@
       </div>
     </div>
 
-    <div class="order-summary-title">Order Summary</div>
-    <div class="order-summary-items" id="orderSummaryItems"></div>
+    <div class="order-summary-title" id="order-summary-title">Order Summary</div>
+    <div class="order-summary-items" id="order-summary-items"></div>
 
     <div class="order-total-row">
-      <span class="order-total-label">Total</span>
-      <span class="order-total-amt" id="orderTotalAmt"></span>
+      <span class="order-total-label" id="order-total-label">Total</span>
+      <span class="order-total-amt" id="order-total-amt"></span>
     </div>
 
-    <div class="order-modal-actions">
-      <button class="order-cancel-btn" onclick="closeOrderModal()">Cancel</button>
+    <div class="order-modal-actions" id="order-modal-actions">
+      <button class="order-cancel-btn" id="btn-order-cancel" onclick="closeOrderModal()">Cancel</button>
       <button class="order-submit-btn" onclick="submitOrder()">Purchase</button>
     </div>
   </div>
@@ -822,350 +822,348 @@
 
 
 <!-- ORDER MODAL -->
-<div class="order-modal-overlay" id="orderModal">
-  <div class="order-modal">
-    <button class="order-modal-close" onclick="closeOrderModal()">✕</button>
-    <div class="order-check-icon">
+<div class="order-modal-overlay" id="modal-order">
+  <div class="order-modal" id="order-modal-box">
+    <button class="order-modal-close" id="btn-order-close" onclick="closeOrderModal()">✕</button>
+    <div class="order-check-icon" id="order-check-icon">
       <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
         <circle cx="18" cy="18" r="18" fill="#1a5c3a"/>
         <path d="M10 18L15.5 23.5L26 13" stroke="#2ecc71" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <h2>Place Your Order</h2>
-    <div class="order-modal-sub">Please fill in your details to complete your order.</div>
-
-    <div class="order-input-wrap">
+    <h2 id="order-modal-title">Place Your Order</h2>
+    <div class="order-modal-sub" id="order-modal-sub">Please fill in your details to complete your order.</div>
+    <div class="order-input-wrap" id="order-wrap-name">
       <span class="order-input-icon">👤</span>
-      <input class="order-input" id="orderName" type="text" placeholder="Name" maxlength="100"/>
+      <input class="order-input" id="order-name" name="orderName" type="text" placeholder="Name" maxlength="100"/>
     </div>
-    <div class="order-input-wrap">
+    <div class="order-input-wrap" id="order-wrap-country">
       <span class="order-input-icon">🌍</span>
-      <select class="order-input" id="orderCountry" style="appearance:none;cursor:pointer" onchange="updateCities()">
+      <select class="order-input" id="order-country" name="orderCountry" style="appearance:none;cursor:pointer" onchange="updateCities()">
         <option value="" disabled selected>Select Country</option>
-          <option value="Afghanistan">Afghanistan</option>
-          <option value="Albania">Albania</option>
-          <option value="Algeria">Algeria</option>
-          <option value="Andorra">Andorra</option>
-          <option value="Angola">Angola</option>
-          <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-          <option value="Argentina">Argentina</option>
-          <option value="Armenia">Armenia</option>
-          <option value="Australia">Australia</option>
-          <option value="Austria">Austria</option>
-          <option value="Azerbaijan">Azerbaijan</option>
-          <option value="Bahamas">Bahamas</option>
-          <option value="Bahrain">Bahrain</option>
-          <option value="Bangladesh">Bangladesh</option>
-          <option value="Barbados">Barbados</option>
-          <option value="Belarus">Belarus</option>
-          <option value="Belgium">Belgium</option>
-          <option value="Belize">Belize</option>
-          <option value="Benin">Benin</option>
-          <option value="Bhutan">Bhutan</option>
-          <option value="Bolivia">Bolivia</option>
-          <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-          <option value="Botswana">Botswana</option>
-          <option value="Brazil">Brazil</option>
-          <option value="Brunei">Brunei</option>
-          <option value="Bulgaria">Bulgaria</option>
-          <option value="Burkina Faso">Burkina Faso</option>
-          <option value="Burundi">Burundi</option>
-          <option value="Cabo Verde">Cabo Verde</option>
-          <option value="Cambodia">Cambodia</option>
-          <option value="Cameroon">Cameroon</option>
-          <option value="Canada">Canada</option>
-          <option value="Central African Republic">Central African Republic</option>
-          <option value="Chad">Chad</option>
-          <option value="Chile">Chile</option>
-          <option value="China">China</option>
-          <option value="Colombia">Colombia</option>
-          <option value="Comoros">Comoros</option>
-          <option value="Congo">Congo</option>
-          <option value="Costa Rica">Costa Rica</option>
-          <option value="Croatia">Croatia</option>
-          <option value="Cuba">Cuba</option>
-          <option value="Cyprus">Cyprus</option>
-          <option value="Czech Republic">Czech Republic</option>
-          <option value="Denmark">Denmark</option>
-          <option value="Djibouti">Djibouti</option>
-          <option value="Dominica">Dominica</option>
-          <option value="Dominican Republic">Dominican Republic</option>
-          <option value="Ecuador">Ecuador</option>
-          <option value="Egypt">Egypt</option>
-          <option value="El Salvador">El Salvador</option>
-          <option value="Equatorial Guinea">Equatorial Guinea</option>
-          <option value="Eritrea">Eritrea</option>
-          <option value="Estonia">Estonia</option>
-          <option value="Eswatini">Eswatini</option>
-          <option value="Ethiopia">Ethiopia</option>
-          <option value="Fiji">Fiji</option>
-          <option value="Finland">Finland</option>
-          <option value="France">France</option>
-          <option value="Gabon">Gabon</option>
-          <option value="Gambia">Gambia</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Germany">Germany</option>
-          <option value="Ghana">Ghana</option>
-          <option value="Greece">Greece</option>
-          <option value="Grenada">Grenada</option>
-          <option value="Guatemala">Guatemala</option>
-          <option value="Guinea">Guinea</option>
-          <option value="Guinea-Bissau">Guinea-Bissau</option>
-          <option value="Guyana">Guyana</option>
-          <option value="Haiti">Haiti</option>
-          <option value="Honduras">Honduras</option>
-          <option value="Hungary">Hungary</option>
-          <option value="Iceland">Iceland</option>
-          <option value="India">India</option>
-          <option value="Indonesia">Indonesia</option>
-          <option value="Iran">Iran</option>
-          <option value="Iraq">Iraq</option>
-          <option value="Ireland">Ireland</option>
-          <option value="Israel">Israel</option>
-          <option value="Italy">Italy</option>
-          <option value="Jamaica">Jamaica</option>
-          <option value="Japan">Japan</option>
-          <option value="Jordan">Jordan</option>
-          <option value="Kazakhstan">Kazakhstan</option>
-          <option value="Kenya">Kenya</option>
-          <option value="Kiribati">Kiribati</option>
-          <option value="Kuwait">Kuwait</option>
-          <option value="Kyrgyzstan">Kyrgyzstan</option>
-          <option value="Laos">Laos</option>
-          <option value="Latvia">Latvia</option>
-          <option value="Lebanon">Lebanon</option>
-          <option value="Lesotho">Lesotho</option>
-          <option value="Liberia">Liberia</option>
-          <option value="Libya">Libya</option>
-          <option value="Liechtenstein">Liechtenstein</option>
-          <option value="Lithuania">Lithuania</option>
-          <option value="Luxembourg">Luxembourg</option>
-          <option value="Madagascar">Madagascar</option>
-          <option value="Malawi">Malawi</option>
-          <option value="Malaysia">Malaysia</option>
-          <option value="Maldives">Maldives</option>
-          <option value="Mali">Mali</option>
-          <option value="Malta">Malta</option>
-          <option value="Marshall Islands">Marshall Islands</option>
-          <option value="Mauritania">Mauritania</option>
-          <option value="Mauritius">Mauritius</option>
-          <option value="Mexico">Mexico</option>
-          <option value="Micronesia">Micronesia</option>
-          <option value="Moldova">Moldova</option>
-          <option value="Monaco">Monaco</option>
-          <option value="Mongolia">Mongolia</option>
-          <option value="Montenegro">Montenegro</option>
-          <option value="Morocco">Morocco</option>
-          <option value="Mozambique">Mozambique</option>
-          <option value="Myanmar">Myanmar</option>
-          <option value="Namibia">Namibia</option>
-          <option value="Nauru">Nauru</option>
-          <option value="Nepal">Nepal</option>
-          <option value="Netherlands">Netherlands</option>
-          <option value="New Zealand">New Zealand</option>
-          <option value="Nicaragua">Nicaragua</option>
-          <option value="Niger">Niger</option>
-          <option value="Nigeria">Nigeria</option>
-          <option value="North Korea">North Korea</option>
-          <option value="North Macedonia">North Macedonia</option>
-          <option value="Norway">Norway</option>
-          <option value="Oman">Oman</option>
-          <option value="Pakistan">Pakistan</option>
-          <option value="Palau">Palau</option>
-          <option value="Palestine">Palestine</option>
-          <option value="Panama">Panama</option>
-          <option value="Papua New Guinea">Papua New Guinea</option>
-          <option value="Paraguay">Paraguay</option>
-          <option value="Peru">Peru</option>
-          <option value="Philippines">Philippines</option>
-          <option value="Poland">Poland</option>
-          <option value="Portugal">Portugal</option>
-          <option value="Qatar">Qatar</option>
-          <option value="Romania">Romania</option>
-          <option value="Russia">Russia</option>
-          <option value="Rwanda">Rwanda</option>
-          <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-          <option value="Saint Lucia">Saint Lucia</option>
-          <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-          <option value="Samoa">Samoa</option>
-          <option value="San Marino">San Marino</option>
-          <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-          <option value="Saudi Arabia">Saudi Arabia</option>
-          <option value="Senegal">Senegal</option>
-          <option value="Serbia">Serbia</option>
-          <option value="Seychelles">Seychelles</option>
-          <option value="Sierra Leone">Sierra Leone</option>
-          <option value="Singapore">Singapore</option>
-          <option value="Slovakia">Slovakia</option>
-          <option value="Slovenia">Slovenia</option>
-          <option value="Solomon Islands">Solomon Islands</option>
-          <option value="Somalia">Somalia</option>
-          <option value="South Africa">South Africa</option>
-          <option value="South Korea">South Korea</option>
-          <option value="South Sudan">South Sudan</option>
-          <option value="Spain">Spain</option>
-          <option value="Sri Lanka">Sri Lanka</option>
-          <option value="Sudan">Sudan</option>
-          <option value="Suriname">Suriname</option>
-          <option value="Sweden">Sweden</option>
-          <option value="Switzerland">Switzerland</option>
-          <option value="Syria">Syria</option>
-          <option value="Taiwan">Taiwan</option>
-          <option value="Tajikistan">Tajikistan</option>
-          <option value="Tanzania">Tanzania</option>
-          <option value="Thailand">Thailand</option>
-          <option value="Timor-Leste">Timor-Leste</option>
-          <option value="Togo">Togo</option>
-          <option value="Tonga">Tonga</option>
-          <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-          <option value="Tunisia">Tunisia</option>
-          <option value="Turkey">Turkey</option>
-          <option value="Turkmenistan">Turkmenistan</option>
-          <option value="Tuvalu">Tuvalu</option>
-          <option value="Uganda">Uganda</option>
-          <option value="Ukraine">Ukraine</option>
-          <option value="United Arab Emirates">United Arab Emirates</option>
-          <option value="United Kingdom">United Kingdom</option>
-          <option value="United States">United States</option>
-          <option value="Uruguay">Uruguay</option>
-          <option value="Uzbekistan">Uzbekistan</option>
-          <option value="Vanuatu">Vanuatu</option>
-          <option value="Vatican City">Vatican City</option>
-          <option value="Venezuela">Venezuela</option>
-          <option value="Vietnam">Vietnam</option>
-          <option value="Yemen">Yemen</option>
-          <option value="Zambia">Zambia</option>
-          <option value="Zimbabwe">Zimbabwe</option>
+        <option value="Afghanistan">Afghanistan</option>
+        <option value="Albania">Albania</option>
+        <option value="Algeria">Algeria</option>
+        <option value="Andorra">Andorra</option>
+        <option value="Angola">Angola</option>
+        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Armenia">Armenia</option>
+        <option value="Australia">Australia</option>
+        <option value="Austria">Austria</option>
+        <option value="Azerbaijan">Azerbaijan</option>
+        <option value="Bahamas">Bahamas</option>
+        <option value="Bahrain">Bahrain</option>
+        <option value="Bangladesh">Bangladesh</option>
+        <option value="Barbados">Barbados</option>
+        <option value="Belarus">Belarus</option>
+        <option value="Belgium">Belgium</option>
+        <option value="Belize">Belize</option>
+        <option value="Benin">Benin</option>
+        <option value="Bhutan">Bhutan</option>
+        <option value="Bolivia">Bolivia</option>
+        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+        <option value="Botswana">Botswana</option>
+        <option value="Brazil">Brazil</option>
+        <option value="Brunei">Brunei</option>
+        <option value="Bulgaria">Bulgaria</option>
+        <option value="Burkina Faso">Burkina Faso</option>
+        <option value="Burundi">Burundi</option>
+        <option value="Cabo Verde">Cabo Verde</option>
+        <option value="Cambodia">Cambodia</option>
+        <option value="Cameroon">Cameroon</option>
+        <option value="Canada">Canada</option>
+        <option value="Central African Republic">Central African Republic</option>
+        <option value="Chad">Chad</option>
+        <option value="Chile">Chile</option>
+        <option value="China">China</option>
+        <option value="Colombia">Colombia</option>
+        <option value="Comoros">Comoros</option>
+        <option value="Congo">Congo</option>
+        <option value="Costa Rica">Costa Rica</option>
+        <option value="Croatia">Croatia</option>
+        <option value="Cuba">Cuba</option>
+        <option value="Cyprus">Cyprus</option>
+        <option value="Czech Republic">Czech Republic</option>
+        <option value="Denmark">Denmark</option>
+        <option value="Djibouti">Djibouti</option>
+        <option value="Dominica">Dominica</option>
+        <option value="Dominican Republic">Dominican Republic</option>
+        <option value="Ecuador">Ecuador</option>
+        <option value="Egypt">Egypt</option>
+        <option value="El Salvador">El Salvador</option>
+        <option value="Equatorial Guinea">Equatorial Guinea</option>
+        <option value="Eritrea">Eritrea</option>
+        <option value="Estonia">Estonia</option>
+        <option value="Eswatini">Eswatini</option>
+        <option value="Ethiopia">Ethiopia</option>
+        <option value="Fiji">Fiji</option>
+        <option value="Finland">Finland</option>
+        <option value="France">France</option>
+        <option value="Gabon">Gabon</option>
+        <option value="Gambia">Gambia</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Germany">Germany</option>
+        <option value="Ghana">Ghana</option>
+        <option value="Greece">Greece</option>
+        <option value="Grenada">Grenada</option>
+        <option value="Guatemala">Guatemala</option>
+        <option value="Guinea">Guinea</option>
+        <option value="Guinea-Bissau">Guinea-Bissau</option>
+        <option value="Guyana">Guyana</option>
+        <option value="Haiti">Haiti</option>
+        <option value="Honduras">Honduras</option>
+        <option value="Hungary">Hungary</option>
+        <option value="Iceland">Iceland</option>
+        <option value="India">India</option>
+        <option value="Indonesia">Indonesia</option>
+        <option value="Iran">Iran</option>
+        <option value="Iraq">Iraq</option>
+        <option value="Ireland">Ireland</option>
+        <option value="Israel">Israel</option>
+        <option value="Italy">Italy</option>
+        <option value="Jamaica">Jamaica</option>
+        <option value="Japan">Japan</option>
+        <option value="Jordan">Jordan</option>
+        <option value="Kazakhstan">Kazakhstan</option>
+        <option value="Kenya">Kenya</option>
+        <option value="Kiribati">Kiribati</option>
+        <option value="Kuwait">Kuwait</option>
+        <option value="Kyrgyzstan">Kyrgyzstan</option>
+        <option value="Laos">Laos</option>
+        <option value="Latvia">Latvia</option>
+        <option value="Lebanon">Lebanon</option>
+        <option value="Lesotho">Lesotho</option>
+        <option value="Liberia">Liberia</option>
+        <option value="Libya">Libya</option>
+        <option value="Liechtenstein">Liechtenstein</option>
+        <option value="Lithuania">Lithuania</option>
+        <option value="Luxembourg">Luxembourg</option>
+        <option value="Madagascar">Madagascar</option>
+        <option value="Malawi">Malawi</option>
+        <option value="Malaysia">Malaysia</option>
+        <option value="Maldives">Maldives</option>
+        <option value="Mali">Mali</option>
+        <option value="Malta">Malta</option>
+        <option value="Marshall Islands">Marshall Islands</option>
+        <option value="Mauritania">Mauritania</option>
+        <option value="Mauritius">Mauritius</option>
+        <option value="Mexico">Mexico</option>
+        <option value="Micronesia">Micronesia</option>
+        <option value="Moldova">Moldova</option>
+        <option value="Monaco">Monaco</option>
+        <option value="Mongolia">Mongolia</option>
+        <option value="Montenegro">Montenegro</option>
+        <option value="Morocco">Morocco</option>
+        <option value="Mozambique">Mozambique</option>
+        <option value="Myanmar">Myanmar</option>
+        <option value="Namibia">Namibia</option>
+        <option value="Nauru">Nauru</option>
+        <option value="Nepal">Nepal</option>
+        <option value="Netherlands">Netherlands</option>
+        <option value="New Zealand">New Zealand</option>
+        <option value="Nicaragua">Nicaragua</option>
+        <option value="Niger">Niger</option>
+        <option value="Nigeria">Nigeria</option>
+        <option value="North Korea">North Korea</option>
+        <option value="North Macedonia">North Macedonia</option>
+        <option value="Norway">Norway</option>
+        <option value="Oman">Oman</option>
+        <option value="Pakistan">Pakistan</option>
+        <option value="Palau">Palau</option>
+        <option value="Palestine">Palestine</option>
+        <option value="Panama">Panama</option>
+        <option value="Papua New Guinea">Papua New Guinea</option>
+        <option value="Paraguay">Paraguay</option>
+        <option value="Peru">Peru</option>
+        <option value="Philippines">Philippines</option>
+        <option value="Poland">Poland</option>
+        <option value="Portugal">Portugal</option>
+        <option value="Qatar">Qatar</option>
+        <option value="Romania">Romania</option>
+        <option value="Russia">Russia</option>
+        <option value="Rwanda">Rwanda</option>
+        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+        <option value="Saint Lucia">Saint Lucia</option>
+        <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+        <option value="Samoa">Samoa</option>
+        <option value="San Marino">San Marino</option>
+        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+        <option value="Saudi Arabia">Saudi Arabia</option>
+        <option value="Senegal">Senegal</option>
+        <option value="Serbia">Serbia</option>
+        <option value="Seychelles">Seychelles</option>
+        <option value="Sierra Leone">Sierra Leone</option>
+        <option value="Singapore">Singapore</option>
+        <option value="Slovakia">Slovakia</option>
+        <option value="Slovenia">Slovenia</option>
+        <option value="Solomon Islands">Solomon Islands</option>
+        <option value="Somalia">Somalia</option>
+        <option value="South Africa">South Africa</option>
+        <option value="South Korea">South Korea</option>
+        <option value="South Sudan">South Sudan</option>
+        <option value="Spain">Spain</option>
+        <option value="Sri Lanka">Sri Lanka</option>
+        <option value="Sudan">Sudan</option>
+        <option value="Suriname">Suriname</option>
+        <option value="Sweden">Sweden</option>
+        <option value="Switzerland">Switzerland</option>
+        <option value="Syria">Syria</option>
+        <option value="Taiwan">Taiwan</option>
+        <option value="Tajikistan">Tajikistan</option>
+        <option value="Tanzania">Tanzania</option>
+        <option value="Thailand">Thailand</option>
+        <option value="Timor-Leste">Timor-Leste</option>
+        <option value="Togo">Togo</option>
+        <option value="Tonga">Tonga</option>
+        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+        <option value="Tunisia">Tunisia</option>
+        <option value="Turkey">Turkey</option>
+        <option value="Turkmenistan">Turkmenistan</option>
+        <option value="Tuvalu">Tuvalu</option>
+        <option value="Uganda">Uganda</option>
+        <option value="Ukraine">Ukraine</option>
+        <option value="United Arab Emirates">United Arab Emirates</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <option value="United States">United States</option>
+        <option value="Uruguay">Uruguay</option>
+        <option value="Uzbekistan">Uzbekistan</option>
+        <option value="Vanuatu">Vanuatu</option>
+        <option value="Vatican City">Vatican City</option>
+        <option value="Venezuela">Venezuela</option>
+        <option value="Vietnam">Vietnam</option>
+        <option value="Yemen">Yemen</option>
+        <option value="Zambia">Zambia</option>
+        <option value="Zimbabwe">Zimbabwe</option>
       </select>
     </div>
-    <div class="order-input-wrap">
+    <div class="order-input-wrap" id="order-wrap-city">
       <span class="order-input-icon">🏙️</span>
-      <select class="order-input" id="orderCity" style="appearance:none;cursor:pointer">
+      <select class="order-input" id="order-city" name="orderCity" style="appearance:none;cursor:pointer">
         <option value="" disabled selected>Select City</option>
       </select>
     </div>
-    <div class="order-input-wrap">
+    <div class="order-input-wrap" id="order-wrap-card">
       <span class="order-input-icon">💳</span>
-      <input class="order-input" id="orderCard" type="text" placeholder="0000-0000-0000-0000" maxlength="19" inputmode="numeric"/>
+      <input class="order-input" id="order-card" name="orderCard" type="text" placeholder="0000-0000-0000-0000" maxlength="19" inputmode="numeric"/>
     </div>
-    <div style="display:flex;gap:10px;">
-      <div class="order-input-wrap" style="flex:1">
+    <div style="display:flex;gap:10px;" id="order-wrap-expiry">
+      <div class="order-input-wrap" style="flex:1" id="order-wrap-month">
         <span class="order-input-icon">📅</span>
-        <select class="order-input" id="orderMonth" style="appearance:none;cursor:pointer">
+        <select class="order-input" id="order-month" name="orderMonth" style="appearance:none;cursor:pointer">
           <option value="" disabled selected>Month</option>
-          <option value="01">January</option>
-          <option value="02">February</option>
-          <option value="03">March</option>
-          <option value="04">April</option>
-          <option value="05">May</option>
-          <option value="06">June</option>
-          <option value="07">July</option>
-          <option value="08">August</option>
-          <option value="09">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
+        <option value="01">January</option>
+        <option value="02">February</option>
+        <option value="03">March</option>
+        <option value="04">April</option>
+        <option value="05">May</option>
+        <option value="06">June</option>
+        <option value="07">July</option>
+        <option value="08">August</option>
+        <option value="09">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
         </select>
       </div>
-      <div class="order-input-wrap" style="flex:1">
+      <div class="order-input-wrap" style="flex:1" id="order-wrap-year">
         <span class="order-input-icon">📅</span>
-        <select class="order-input" id="orderYear" style="appearance:none;cursor:pointer">
+        <select class="order-input" id="order-year" name="orderYear" style="appearance:none;cursor:pointer">
           <option value="" disabled selected>Year</option>
-          <option value="2026">2026</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
-          <option value="2021">2021</option>
-          <option value="2020">2020</option>
-          <option value="2019">2019</option>
-          <option value="2018">2018</option>
-          <option value="2017">2017</option>
-          <option value="2016">2016</option>
-          <option value="2015">2015</option>
-          <option value="2014">2014</option>
-          <option value="2013">2013</option>
-          <option value="2012">2012</option>
-          <option value="2011">2011</option>
-          <option value="2010">2010</option>
-          <option value="2009">2009</option>
-          <option value="2008">2008</option>
-          <option value="2007">2007</option>
-          <option value="2006">2006</option>
-          <option value="2005">2005</option>
-          <option value="2004">2004</option>
-          <option value="2003">2003</option>
-          <option value="2002">2002</option>
-          <option value="2001">2001</option>
-          <option value="2000">2000</option>
-          <option value="1999">1999</option>
-          <option value="1998">1998</option>
-          <option value="1997">1997</option>
-          <option value="1996">1996</option>
-          <option value="1995">1995</option>
-          <option value="1994">1994</option>
-          <option value="1993">1993</option>
-          <option value="1992">1992</option>
-          <option value="1991">1991</option>
-          <option value="1990">1990</option>
-          <option value="1989">1989</option>
-          <option value="1988">1988</option>
-          <option value="1987">1987</option>
-          <option value="1986">1986</option>
-          <option value="1985">1985</option>
-          <option value="1984">1984</option>
-          <option value="1983">1983</option>
-          <option value="1982">1982</option>
-          <option value="1981">1981</option>
-          <option value="1980">1980</option>
-          <option value="1979">1979</option>
-          <option value="1978">1978</option>
-          <option value="1977">1977</option>
-          <option value="1976">1976</option>
-          <option value="1975">1975</option>
-          <option value="1974">1974</option>
-          <option value="1973">1973</option>
-          <option value="1972">1972</option>
-          <option value="1971">1971</option>
-          <option value="1970">1970</option>
-          <option value="1969">1969</option>
-          <option value="1968">1968</option>
-          <option value="1967">1967</option>
-          <option value="1966">1966</option>
-          <option value="1965">1965</option>
-          <option value="1964">1964</option>
-          <option value="1963">1963</option>
-          <option value="1962">1962</option>
-          <option value="1961">1961</option>
-          <option value="1960">1960</option>
-          <option value="1959">1959</option>
-          <option value="1958">1958</option>
-          <option value="1957">1957</option>
-          <option value="1956">1956</option>
-          <option value="1955">1955</option>
-          <option value="1954">1954</option>
-          <option value="1953">1953</option>
-          <option value="1952">1952</option>
-          <option value="1951">1951</option>
-          <option value="1950">1950</option>
-          <option value="1949">1949</option>
-          <option value="1948">1948</option>
-          <option value="1947">1947</option>
-          <option value="1946">1946</option>
-          <option value="1945">1945</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+        <option value="2017">2017</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+        <option value="2014">2014</option>
+        <option value="2013">2013</option>
+        <option value="2012">2012</option>
+        <option value="2011">2011</option>
+        <option value="2010">2010</option>
+        <option value="2009">2009</option>
+        <option value="2008">2008</option>
+        <option value="2007">2007</option>
+        <option value="2006">2006</option>
+        <option value="2005">2005</option>
+        <option value="2004">2004</option>
+        <option value="2003">2003</option>
+        <option value="2002">2002</option>
+        <option value="2001">2001</option>
+        <option value="2000">2000</option>
+        <option value="1999">1999</option>
+        <option value="1998">1998</option>
+        <option value="1997">1997</option>
+        <option value="1996">1996</option>
+        <option value="1995">1995</option>
+        <option value="1994">1994</option>
+        <option value="1993">1993</option>
+        <option value="1992">1992</option>
+        <option value="1991">1991</option>
+        <option value="1990">1990</option>
+        <option value="1989">1989</option>
+        <option value="1988">1988</option>
+        <option value="1987">1987</option>
+        <option value="1986">1986</option>
+        <option value="1985">1985</option>
+        <option value="1984">1984</option>
+        <option value="1983">1983</option>
+        <option value="1982">1982</option>
+        <option value="1981">1981</option>
+        <option value="1980">1980</option>
+        <option value="1979">1979</option>
+        <option value="1978">1978</option>
+        <option value="1977">1977</option>
+        <option value="1976">1976</option>
+        <option value="1975">1975</option>
+        <option value="1974">1974</option>
+        <option value="1973">1973</option>
+        <option value="1972">1972</option>
+        <option value="1971">1971</option>
+        <option value="1970">1970</option>
+        <option value="1969">1969</option>
+        <option value="1968">1968</option>
+        <option value="1967">1967</option>
+        <option value="1966">1966</option>
+        <option value="1965">1965</option>
+        <option value="1964">1964</option>
+        <option value="1963">1963</option>
+        <option value="1962">1962</option>
+        <option value="1961">1961</option>
+        <option value="1960">1960</option>
+        <option value="1959">1959</option>
+        <option value="1958">1958</option>
+        <option value="1957">1957</option>
+        <option value="1956">1956</option>
+        <option value="1955">1955</option>
+        <option value="1954">1954</option>
+        <option value="1953">1953</option>
+        <option value="1952">1952</option>
+        <option value="1951">1951</option>
+        <option value="1950">1950</option>
+        <option value="1949">1949</option>
+        <option value="1948">1948</option>
+        <option value="1947">1947</option>
+        <option value="1946">1946</option>
+        <option value="1945">1945</option>
         </select>
       </div>
     </div>
-
-    <div class="order-summary-title">Order Summary</div>
-    <div class="order-summary-items" id="orderSummaryItems"></div>
-    <div class="order-total-row">
-      <span class="order-total-label">Total</span>
-      <span class="order-total-amt" id="orderTotalAmt"></span>
+    <div class="order-summary-title" id="order-summary-title">Order Summary</div>
+    <div class="order-summary-items" id="order-summary-items"></div>
+    <div class="order-total-row" id="order-total-row">
+      <span class="order-total-label" id="order-total-label">Total</span>
+      <span class="order-total-amt" id="order-total-amt"></span>
     </div>
-    <div class="order-modal-actions">
-      <button class="order-cancel-btn" onclick="closeOrderModal()">Cancel</button>
-      <button class="order-submit-btn" onclick="submitOrder()">Place Order</button>
+    <div class="order-modal-actions" id="order-modal-actions">
+      <button class="order-cancel-btn" id="btn-order-cancel" onclick="closeOrderModal()">Cancel</button>
+      <button class="order-submit-btn" id="btn-order-submit" onclick="submitOrder()">Place Order</button>
     </div>
   </div>
 </div>
@@ -1225,7 +1223,7 @@ function filterCategory(cat) {
   var map = {all:0, phones:1, laptops:2, monitors:3};
   if (links[map[cat]]) links[map[cat]].classList.add('active');
   var titles = {all:'All Products', phones:'📱 Phones', laptops:'💻 Laptops', monitors:'🖥️ Monitors'};
-  document.getElementById('sectionTitle').textContent = titles[cat];
+  document.getElementById('section-title').textContent = titles[cat];
   renderProducts();
 }
 
@@ -1237,59 +1235,57 @@ function renderProducts() {
   var start = (currentPage - 1) * ITEMS_PER_PAGE;
   var items = filtered.slice(start, start + ITEMS_PER_PAGE);
 
-  document.getElementById('productCount').textContent = total + ' produk';
-  var grid = document.getElementById('productGrid');
+  document.getElementById('product-count').textContent = total + ' produk';
+  var grid = document.getElementById('product-grid');
   grid.innerHTML = '';
 
   for (var i = 0; i < items.length; i++) {
     (function(p) {
       var card = document.createElement('div');
       card.className = 'product-card fade-in';
+      card.id = 'product-card-' + p.id;
+      card.setAttribute('data-product-id', p.id);
+      card.setAttribute('data-product-name', p.name);
+      card.setAttribute('data-product-category', p.category);
+      card.setAttribute('data-product-price', p.price);
       card.style.animationDelay = (i * 0.05) + 's';
 
       var badgeHtml = p.badge ? '<div class="product-badge ' + (p.badge === 'Sale' ? 'sale' : '') + '">' + p.badge + '</div>' : '';
       var oldPriceHtml = p.oldPrice ? '<span class="old-price">' + fmt(p.oldPrice) + '</span>' : '';
 
-      var colorGroupId = 'color_' + p.id + '_' + i;
+      var cgId = 'card-color-'+p.id+'-'+i;
+      card.setAttribute('id','product-card-'+p.id);
       card.innerHTML =
-        '<div class="product-img-wrap">' +
+        '<div class="product-img-wrap" id="product-img-'+p.id+'">' +
           badgeHtml +
-          '<span style="font-size:3.5rem">' + p.emoji + '</span>' +
+          '<span style="font-size:3.5rem" id="product-emoji-'+p.id+'">' + p.emoji + '</span>' +
         '</div>' +
-        '<div class="product-info">' +
-          '<div class="product-name">' + p.name + '</div>' +
-          '<div class="product-desc">' + p.desc.substring(0, 60) + '...</div>' +
-          '<div class="card-color-row">' +
+        '<div class="product-info" id="product-info-'+p.id+'">' +
+          '<div class="product-name" id="product-name-'+p.id+'">' + p.name + '</div>' +
+          '<div class="product-desc" id="product-desc-'+p.id+'">' + p.desc.substring(0,60) + '...</div>' +
+          '<div class="card-color-row" id="product-color-row-'+p.id+'">' +
             '<span class="card-color-title">Warna:</span>' +
-            '<label class="card-color-opt"><input type="radio" name="' + colorGroupId + '" value="Merah"><div class="card-color-dot red" title="Merah"></div></label>' +
-            '<label class="card-color-opt"><input type="radio" name="' + colorGroupId + '" value="Putih"><div class="card-color-dot white" title="Putih"></div></label>' +
-            '<label class="card-color-opt"><input type="radio" name="' + colorGroupId + '" value="Hitam"><div class="card-color-dot black" title="Hitam"></div></label>' +
-            '<label class="card-color-opt"><input type="radio" name="' + colorGroupId + '" value="Biru"><div class="card-color-dot blue" title="Biru"></div></label>' +
+            '<label class="card-color-opt" id="card-color-merah-'+p.id+'"><input type="radio" id="'+cgId+'-merah" name="'+cgId+'" value="Merah"><div class="card-color-dot red" title="Merah"></div></label>' +
+            '<label class="card-color-opt" id="card-color-putih-'+p.id+'"><input type="radio" id="'+cgId+'-putih" name="'+cgId+'" value="Putih"><div class="card-color-dot white" title="Putih"></div></label>' +
+            '<label class="card-color-opt" id="card-color-hitam-'+p.id+'"><input type="radio" id="'+cgId+'-hitam" name="'+cgId+'" value="Hitam"><div class="card-color-dot black" title="Hitam"></div></label>' +
+            '<label class="card-color-opt" id="card-color-biru-'+p.id+'"><input type="radio" id="'+cgId+'-biru" name="'+cgId+'" value="Biru"><div class="card-color-dot blue" title="Biru"></div></label>' +
           '</div>' +
-          '<div class="product-footer">' +
-            '<div class="product-price">' + oldPriceHtml + fmt(p.price) + '</div>' +
-            '<button class="add-cart-btn">+ Cart</button>' +
+          '<div class="product-footer" id="product-footer-'+p.id+'">' +
+            '<div class="product-price" id="product-price-'+p.id+'">' + oldPriceHtml + fmt(p.price) + '</div>' +
+            '<button class="add-cart-btn" id="btn-add-cart-'+p.id+'">+ Cart</button>' +
           '</div>' +
         '</div>';
 
-      // TOMBOL + CART dengan validasi warna
       card.querySelector('.add-cart-btn').onclick = function() {
-        var radios = card.querySelectorAll('input[name="' + colorGroupId + '"]');
+        var radios = card.querySelectorAll('input[name="'+cgId+'"]');
         var selectedColor = '';
-        for (var r = 0; r < radios.length; r++) {
-          if (radios[r].checked) { selectedColor = radios[r].value; break; }
-        }
+        for (var r=0;r<radios.length;r++) { if (radios[r].checked) { selectedColor=radios[r].value; break; } }
         if (!selectedColor) { alert('Silakan pilih warna terlebih dahulu!'); return; }
-        var cartKey = p.id + '_' + selectedColor;
+        var cartKey = p.id+'_'+selectedColor;
         var existing = null;
-        for (var j = 0; j < cart.length; j++) {
-          if (cart[j].cartKey === cartKey) { existing = cart[j]; break; }
-        }
-        if (existing) {
-          existing.qty++;
-        } else {
-          cart.push({ id:p.id, cartKey:cartKey, name:p.name+' ('+selectedColor+')', price:p.price, emoji:p.emoji, color:selectedColor, qty:1 });
-        }
+        for (var j=0;j<cart.length;j++) { if (cart[j].cartKey===cartKey) { existing=cart[j]; break; } }
+        if (existing) { existing.qty++; }
+        else { cart.push({id:p.id, cartKey:cartKey, name:p.name+' ('+selectedColor+')', price:p.price, emoji:p.emoji, color:selectedColor, qty:1}); }
         localStorage.setItem('tc', JSON.stringify(cart));
         updateCartUI();
         alert('Product added.');
@@ -1330,11 +1326,11 @@ function renderProducts() {
 function updateCartUI() {
   var total = 0;
   for (var i = 0; i < cart.length; i++) total += cart[i].qty;
-  var countEl = document.getElementById('cartCount');
+  var countEl = document.getElementById('cart-count');
   if (countEl) countEl.textContent = total;
 
-  var body = document.getElementById('cartBody');
-  var footer = document.getElementById('cartFooter');
+  var body = document.getElementById('cart-body');
+  var footer = document.getElementById('cart-footer');
   if (cart.length === 0) {
     body.innerHTML = '<div class="cart-empty"><div style="font-size:3rem">🛒</div><div>Keranjang kosong</div></div>';
     footer.style.display = 'none';
@@ -1350,36 +1346,35 @@ function updateCartUI() {
           '<div class="cart-item-name">' + item.name + '</div>' +
           '<div class="cart-item-price">' + fmt(item.price) + '</div>' +
           '<div class="cart-item-qty">' +
-            '<button class="qty-btn" onclick="changeQty(' + i + ', -1)">−</button>' +
+            '<button class="qty-btn" onclick="changeQty(' + item.id + ',-1)">−</button>' +
             '<span class="qty-val">' + item.qty + '</span>' +
-            '<button class="qty-btn" onclick="changeQty(' + i + ', 1)">+</button>' +
+            '<button class="qty-btn" onclick="changeQty(' + item.id + ',1)">+</button>' +
           '</div>' +
         '</div>' +
-        '<button class="cart-item-del" onclick="removeCart(' + i + ')">🗑</button>' +
+        '<button class="cart-item-del" onclick="removeCart(' + item.id + ')">🗑</button>' +
       '</div>';
     }
     body.innerHTML = html;
-    document.getElementById('cartTotalAmt').textContent = fmt(grandTotal);
+    document.getElementById('cart-total-amt').textContent = fmt(grandTotal);
     footer.style.display = 'block';
   }
 }
 
-function changeQty(idx, delta) {
-  if (cart[idx]) {
-    cart[idx].qty += delta;
-    if (cart[idx].qty <= 0) { cart.splice(idx, 1); }
+function changeQty(id, delta) {
+  for (var i = 0; i < cart.length; i++) {
+    if (cart[i].id === id) { cart[i].qty += delta; if (cart[i].qty <= 0) { cart.splice(i, 1); } break; }
   }
   localStorage.setItem('tc', JSON.stringify(cart));
   updateCartUI();
 }
-function removeCart(idx) {
-  cart.splice(idx, 1);
+function removeCart(id) {
+  cart = cart.filter(function(x) { return x.id !== id; });
   localStorage.setItem('tc', JSON.stringify(cart));
   updateCartUI();
 }
 function toggleCart() {
-  var panel = document.getElementById('cartPanel');
-  var overlay = document.getElementById('cartOverlay');
+  var panel = document.getElementById('cart-panel');
+  var overlay = document.getElementById('cart-overlay');
   var open = panel.classList.toggle('open');
   overlay.style.display = open ? 'block' : 'none';
 }
@@ -1399,21 +1394,21 @@ function openOrderModal() {
       '<div class="order-summary-qty">x ' + item.qty + '</div>' +
     '</div>';
   }
-  document.getElementById('orderSummaryItems').innerHTML = itemsHtml;
-  document.getElementById('orderTotalAmt').textContent = fmt(grandTotal);
-  document.getElementById('orderModal').classList.add('open');
+  document.getElementById('order-summary-items').innerHTML = itemsHtml;
+  document.getElementById('order-total-amt').textContent = fmt(grandTotal);
+  document.getElementById('modal-order').classList.add('open');
 }
 
 function closeOrderModal() {
-  document.getElementById('orderModal').classList.remove('open');
+  document.getElementById('modal-order').classList.remove('open');
 }
 
 // Cities data
 var citiesData = {"Afghanistan": ["Kabul", "Kandahar", "Herat", "Mazar-i-Sharif"], "Albania": ["Tirana", "Durr\u00ebs", "Vlor\u00eb", "Shkod\u00ebr"], "Algeria": ["Algiers", "Oran", "Constantine", "Annaba"], "Andorra": ["Andorra la Vella"], "Angola": ["Luanda", "Huambo", "Lobito", "Benguela"], "Argentina": ["Buenos Aires", "C\u00f3rdoba", "Rosario", "Mendoza", "La Plata"], "Armenia": ["Yerevan", "Gyumri", "Vanadzor"], "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Canberra", "Gold Coast"], "Austria": ["Vienna", "Graz", "Linz", "Salzburg", "Innsbruck"], "Azerbaijan": ["Baku", "Ganja", "Sumqay\u0131t"], "Bahamas": ["Nassau", "Freeport"], "Bahrain": ["Manama", "Riffa", "Muharraq"], "Bangladesh": ["Dhaka", "Chittagong", "Khulna", "Sylhet", "Rajshahi"], "Barbados": ["Bridgetown"], "Belarus": ["Minsk", "Homyel", "Vitebsk", "Mahilyow"], "Belgium": ["Brussels", "Antwerp", "Ghent", "Bruges", "Li\u00e8ge"], "Belize": ["Belmopan", "Belize City"], "Benin": ["Cotonou", "Porto-Novo", "Abomey"], "Bhutan": ["Thimphu", "Phuentsholing"], "Bolivia": ["Sucre", "La Paz", "Cochabamba", "Santa Cruz"], "Bosnia and Herzegovina": ["Sarajevo", "Banja Luka", "Mostar"], "Botswana": ["Gaborone", "Francistown", "Maun"], "Brazil": ["S\u00e3o Paulo", "Rio de Janeiro", "Bras\u00edlia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife", "Porto Alegre"], "Brunei": ["Bandar Seri Begawan"], "Bulgaria": ["Sofia", "Plovdiv", "Varna", "Burgas"], "Burkina Faso": ["Ouagadougou", "Bobo-Dioulasso"], "Burundi": ["Gitega", "Bujumbura"], "Cambodia": ["Phnom Penh", "Siem Reap", "Sihanoukville"], "Cameroon": ["Yaound\u00e9", "Douala", "Bamenda"], "Canada": ["Toronto", "Montreal", "Vancouver", "Calgary", "Ottawa", "Edmonton", "Winnipeg", "Quebec City", "Hamilton"], "Chile": ["Santiago", "Valpara\u00edso", "Concepci\u00f3n", "Antofagasta"], "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Chengdu", "Chongqing", "Wuhan", "Xi'an", "Hangzhou", "Nanjing", "Tianjin"], "Colombia": ["Bogot\u00e1", "Medell\u00edn", "Cali", "Barranquilla", "Cartagena"], "Costa Rica": ["San Jos\u00e9", "Alajuela", "Cartago"], "Croatia": ["Zagreb", "Split", "Rijeka", "Osijek"], "Cuba": ["Havana", "Santiago de Cuba", "Camag\u00fcey"], "Cyprus": ["Nicosia", "Limassol", "Larnaca"], "Czech Republic": ["Prague", "Brno", "Ostrava", "Plze\u0148"], "Denmark": ["Copenhagen", "Aarhus", "Odense", "Aalborg"], "Dominican Republic": ["Santo Domingo", "Santiago", "La Romana"], "Ecuador": ["Quito", "Guayaquil", "Cuenca"], "Egypt": ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Sharm el-Sheikh"], "El Salvador": ["San Salvador", "Santa Ana", "San Miguel"], "Estonia": ["Tallinn", "Tartu", "Narva"], "Ethiopia": ["Addis Ababa", "Dire Dawa", "Gondar"], "Fiji": ["Suva", "Lautoka", "Nadi"], "Finland": ["Helsinki", "Espoo", "Tampere", "Oulu"], "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Bordeaux", "Lille"], "Germany": ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "D\u00fcsseldorf", "Dortmund", "Leipzig"], "Ghana": ["Accra", "Kumasi", "Tamale"], "Greece": ["Athens", "Thessaloniki", "Patras", "Heraklion"], "Guatemala": ["Guatemala City", "Quetzaltenango", "Escuintla"], "Hungary": ["Budapest", "Debrecen", "Miskolc", "P\u00e9cs"], "Iceland": ["Reykjavik", "Akureyri"], "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Surat", "Lucknow"], "Indonesia": ["Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang", "Tangerang", "Depok", "Bekasi", "Yogyakarta", "Denpasar"], "Iran": ["Tehran", "Mashhad", "Isfahan", "Karaj", "Shiraz", "Tabriz"], "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Sulaymaniyah"], "Ireland": ["Dublin", "Cork", "Limerick", "Galway"], "Israel": ["Jerusalem", "Tel Aviv", "Haifa", "Be'er Sheva"], "Italy": ["Rome", "Milan", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Venice"], "Jamaica": ["Kingston", "Montego Bay", "Portmore"], "Japan": ["Tokyo", "Osaka", "Yokohama", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kyoto", "Hiroshima"], "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba"], "Kazakhstan": ["Almaty", "Astana", "Shymkent", "Aktobe"], "Kenya": ["Nairobi", "Mombasa", "Kisumu", "Nakuru"], "Kuwait": ["Kuwait City", "Hawalli", "Salmiya"], "Laos": ["Vientiane", "Luang Prabang", "Pakse"], "Latvia": ["Riga", "Daugavpils", "Liep\u0101ja"], "Lebanon": ["Beirut", "Tripoli", "Sidon"], "Libya": ["Tripoli", "Benghazi", "Misrata"], "Lithuania": ["Vilnius", "Kaunas", "Klaip\u0117da"], "Luxembourg": ["Luxembourg City"], "Madagascar": ["Antananarivo", "Toamasina", "Antsirabe"], "Malaysia": ["Kuala Lumpur", "George Town", "Johor Bahru", "Ipoh", "Petaling Jaya", "Shah Alam", "Kota Kinabalu", "Kuching"], "Maldives": ["Mal\u00e9", "Addu City"], "Mali": ["Bamako", "Sikasso", "Mopti"], "Malta": ["Valletta", "Birkirkara", "Qormi"], "Mauritius": ["Port Louis", "Beau Bassin-Rose Hill", "Vacoas-Phoenix"], "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "Le\u00f3n", "Ju\u00e1rez", "Zapopan", "M\u00e9rida", "Canc\u00fan"], "Moldova": ["Chi\u0219in\u0103u", "Tiraspol", "B\u0103l\u021bi"], "Monaco": ["Monaco"], "Mongolia": ["Ulaanbaatar", "Erdenet", "Darkhan"], "Montenegro": ["Podgorica", "Nik\u0161i\u0107", "Herceg Novi"], "Morocco": ["Casablanca", "Rabat", "Marrakech", "Fez", "Tangier", "Agadir"], "Mozambique": ["Maputo", "Matola", "Beira"], "Myanmar": ["Naypyidaw", "Yangon", "Mandalay"], "Namibia": ["Windhoek", "Walvis Bay", "Swakopmund"], "Nepal": ["Kathmandu", "Pokhara", "Lalitpur", "Bharatpur"], "Netherlands": ["Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven"], "New Zealand": ["Auckland", "Wellington", "Christchurch", "Hamilton", "Dunedin"], "Nicaragua": ["Managua", "Le\u00f3n", "Masaya"], "Nigeria": ["Lagos", "Abuja", "Kano", "Ibadan", "Port Harcourt", "Enugu"], "North Korea": ["Pyongyang", "Hamhung", "Chongjin"], "Norway": ["Oslo", "Bergen", "Stavanger", "Trondheim"], "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa"], "Pakistan": ["Karachi", "Lahore", "Faisalabad", "Rawalpindi", "Islamabad", "Multan", "Peshawar", "Quetta"], "Palestine": ["Gaza", "Ramallah", "Nablus", "Hebron"], "Panama": ["Panama City", "San Miguelito", "Col\u00f3n"], "Paraguay": ["Asunci\u00f3n", "Ciudad del Este", "San Lorenzo"], "Peru": ["Lima", "Arequipa", "Trujillo", "Chiclayo", "Cusco"], "Philippines": ["Manila", "Quezon City", "Davao", "Cebu City", "Zamboanga", "Makati", "Taguig", "Pasig"], "Poland": ["Warsaw", "Krak\u00f3w", "\u0141\u00f3d\u017a", "Wroc\u0142aw", "Pozna\u0144", "Gda\u0144sk"], "Portugal": ["Lisbon", "Porto", "Braga", "Coimbra", "Faro"], "Qatar": ["Doha", "Al Rayyan", "Al Wakrah"], "Romania": ["Bucharest", "Cluj-Napoca", "Timi\u0219oara", "Ia\u0219i", "Constan\u021ba"], "Russia": ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod", "Chelyabinsk", "Omsk"], "Rwanda": ["Kigali", "Butare", "Gitarama"], "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Tabuk"], "Senegal": ["Dakar", "Touba", "Thi\u00e8s"], "Serbia": ["Belgrade", "Novi Sad", "Ni\u0161", "Kragujevac"], "Singapore": ["Singapore"], "Slovakia": ["Bratislava", "Ko\u0161ice", "Pre\u0161ov", "\u017dilina"], "Slovenia": ["Ljubljana", "Maribor", "Celje"], "Somalia": ["Mogadishu", "Hargeisa", "Kismayo"], "South Africa": ["Johannesburg", "Cape Town", "Durban", "Pretoria", "Port Elizabeth", "Bloemfontein"], "South Korea": ["Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Suwon"], "South Sudan": ["Juba", "Wau", "Malakal"], "Spain": ["Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "M\u00e1laga", "Murcia", "Bilbao"], "Sri Lanka": ["Colombo", "Kandy", "Galle", "Jaffna"], "Sudan": ["Khartoum", "Omdurman", "Port Sudan"], "Sweden": ["Stockholm", "Gothenburg", "Malm\u00f6", "Uppsala", "Link\u00f6ping"], "Switzerland": ["Zurich", "Geneva", "Basel", "Bern", "Lausanne"], "Syria": ["Damascus", "Aleppo", "Homs", "Latakia"], "Taiwan": ["Taipei", "New Taipei", "Taichung", "Kaohsiung", "Tainan"], "Tanzania": ["Dodoma", "Dar es Salaam", "Mwanza", "Arusha"], "Thailand": ["Bangkok", "Chiang Mai", "Phuket", "Pattaya", "Khon Kaen", "Hat Yai"], "Tunisia": ["Tunis", "Sfax", "Sousse", "Kairouan"], "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Adana", "Antalya", "Gaziantep"], "Uganda": ["Kampala", "Gulu", "Lira", "Mbarara"], "Ukraine": ["Kyiv", "Kharkiv", "Odessa", "Dnipro", "Lviv", "Zaporizhzhia"], "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah"], "United Kingdom": ["London", "Birmingham", "Manchester", "Glasgow", "Liverpool", "Leeds", "Sheffield", "Edinburgh", "Bristol", "Cardiff"], "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Seattle", "Denver", "Nashville", "Miami", "Atlanta", "Boston", "Las Vegas"], "Uruguay": ["Montevideo", "Salto", "Paysand\u00fa"], "Uzbekistan": ["Tashkent", "Samarkand", "Namangan", "Andijan"], "Venezuela": ["Caracas", "Maracaibo", "Valencia", "Barquisimeto"], "Vietnam": ["Hanoi", "Ho Chi Minh City", "Da Nang", "Haiphong", "Can Tho", "Hue"], "Yemen": ["Sanaa", "Aden", "Taiz", "Hodeidah"], "Zambia": ["Lusaka", "Kitwe", "Ndola", "Kabwe"], "Zimbabwe": ["Harare", "Bulawayo", "Chitungwiza", "Mutare"]};
 
 function updateCities() {
-  var country = document.getElementById('orderCountry').value;
-  var citySelect = document.getElementById('orderCity');
+  var country = document.getElementById('order-country').value;
+  var citySelect = document.getElementById('order-city');
   citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
   var cities = citiesData[country] || [];
   for (var i = 0; i < cities.length; i++) {
@@ -1432,7 +1427,7 @@ function updateCities() {
 
 // Credit card formatting
 document.addEventListener('DOMContentLoaded', function() {
-  var cardInput = document.getElementById('orderCard');
+  var cardInput = document.getElementById('order-card');
   if (cardInput) {
     cardInput.addEventListener('input', function(e) {
       var val = this.value.replace(/[^0-9]/g, '');
@@ -1455,12 +1450,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function submitOrder() {
-  var name = document.getElementById('orderName').value.trim();
-  var country = document.getElementById('orderCountry').value;
-  var city = document.getElementById('orderCity').value;
-  var card = document.getElementById('orderCard').value.trim();
-  var month = document.getElementById('orderMonth').value.trim();
-  var year = document.getElementById('orderYear').value.trim();
+  var name = document.getElementById('order-name').value.trim();
+  var country = document.getElementById('order-country').value;
+  var city = document.getElementById('order-city').value;
+  var card = document.getElementById('order-card').value.trim();
+  var month = document.getElementById('order-month').value.trim();
+  var year = document.getElementById('order-year').value.trim();
   var cardDigits = card.replace(/-/g, '');
   if (!name || !country || !city || !card || !month || !year) {
     alert('Please fill in all fields.');
@@ -1484,72 +1479,51 @@ function checkout() {
 function openDetail(id) {
   var p = null;
   for (var i = 0; i < products.length; i++) { if (products[i].id === id) { p = products[i]; break; } }
-  document.getElementById('detailImg').textContent = p.emoji;
-  document.getElementById('detailName').textContent = p.name;
-  document.getElementById('detailPrice').textContent = fmt(p.price);
-  document.getElementById('detailDesc').textContent = p.desc;
+  document.getElementById('detail-img').textContent = p.emoji;
+  document.getElementById('detail-name').textContent = p.name;
+  document.getElementById('detail-price').textContent = fmt(p.price);
+  document.getElementById('detail-desc').textContent = p.desc;
 
-  // Reset warna setiap buka modal
-  var radios = document.querySelectorAll('input[name="productColor"]');
-  for (var r = 0; r < radios.length; r++) { radios[r].checked = false; }
-
-  document.getElementById('detailAddBtn').onclick = function() {
-    var selectedColor = '';
-    var radios = document.querySelectorAll('input[name="productColor"]');
-    for (var r = 0; r < radios.length; r++) {
-      if (radios[r].checked) { selectedColor = radios[r].value; break; }
-    }
-    if (!selectedColor) { alert('Silakan pilih warna terlebih dahulu!'); return; }
-
-    var cartKey = p.id + '_' + selectedColor;
+  // TOMBOL ADD TO CART DI DETAIL — alert langsung
+  document.getElementById('detail-btn-add-cart').onclick = function() {
     var existing = null;
-    for (var j = 0; j < cart.length; j++) {
-      if (cart[j].cartKey === cartKey) { existing = cart[j]; break; }
-    }
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ id:p.id, cartKey:cartKey, name:p.name+' ('+selectedColor+')', price:p.price, emoji:p.emoji, color:selectedColor, qty:1 });
-    }
+    for (var j = 0; j < cart.length; j++) { if (cart[j].id === p.id) { existing = cart[j]; break; } }
+    if (existing) { existing.qty++; } else { cart.push({id:p.id, name:p.name, price:p.price, emoji:p.emoji, qty:1}); }
     localStorage.setItem('tc', JSON.stringify(cart));
     updateCartUI();
-    closeModal('detailModal');
+    closeModal('modal-detail');
     alert('Product added.');
   };
 
-  openModal('detailModal');
+  openModal('modal-detail');
 }
 
 // AUTH
 function doLogin() {
-  var u = document.getElementById('loginUser').value.trim();
-  var pw = document.getElementById('loginPass').value;
+  var u = document.getElementById('input-login-username').value.trim();
+  var pw = document.getElementById('input-login-password').value;
   if (!u || !pw) { showToast('⚠️ Isi semua field.'); return; }
-  if (u === 'admin' && pw === 'admin123') {
-    loggedUser = u; localStorage.setItem('tc_user', u);
-    closeModal('loginModal'); updateAuthUI(); showToast('👋 Selamat datang, admin!'); return;
-  }
   var users = JSON.parse(localStorage.getItem('tc_users') || '{}');
   if (users[u] && users[u] === pw) {
     loggedUser = u; localStorage.setItem('tc_user', u);
-    closeModal('loginModal'); updateAuthUI(); showToast('👋 Selamat datang, ' + u + '!');
+    closeModal('modal-login'); updateAuthUI(); showToast('👋 Selamat datang, ' + u + '!');
   } else { showToast('❌ Username atau password salah.'); }
 }
 function doSignup() {
-  var u = document.getElementById('signupUser').value.trim();
-  var pw = document.getElementById('signupPass').value;
+  var u = document.getElementById('input-signup-username').value.trim();
+  var pw = document.getElementById('input-signup-password').value;
   if (!u || !pw) { showToast('⚠️ Isi semua field.'); return; }
   var users = JSON.parse(localStorage.getItem('tc_users') || '{}');
   if (users[u]) { showToast('❌ Username sudah ada.'); return; }
   users[u] = pw; localStorage.setItem('tc_users', JSON.stringify(users));
   loggedUser = u; localStorage.setItem('tc_user', u);
-  closeModal('signupModal'); updateAuthUI(); showToast('🎉 Akun berhasil dibuat, ' + u + '!');
+  closeModal('modal-signup'); updateAuthUI(); showToast('🎉 Akun berhasil dibuat, ' + u + '!');
 }
 function doLogout() {
   loggedUser = null; localStorage.removeItem('tc_user'); updateAuthUI(); showToast('👋 Berhasil logout.');
 }
 function updateAuthUI() {
-  var actions = document.getElementById('navActions');
+  var actions = document.getElementById('nav-actions');
   var cnt = 0; for (var i = 0; i < cart.length; i++) cnt += cart[i].qty;
   if (loggedUser) {
     actions.innerHTML =
@@ -1559,8 +1533,8 @@ function updateAuthUI() {
   } else {
     actions.innerHTML =
       '<button class="cart-btn" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">' + cnt + '</span></button>' +
-      '<button class="btn btn-ghost btn-sm" onclick="openModal(\'loginModal\')">Log in</button>' +
-      '<button class="btn btn-primary btn-sm" onclick="openModal(\'signupModal\')">Sign up</button>';
+      '<button class="btn btn-ghost btn-sm" onclick="openModal(\'modal-login\')">Log in</button>' +
+      '<button class="btn btn-primary btn-sm" onclick="openModal(\'modal-signup\')">Sign up</button>';
   }
 }
 
@@ -1576,7 +1550,7 @@ document.querySelectorAll('.modal-overlay').forEach(function(el) {
 var toastTimer;
 function showToast(msg) {
   var t = document.getElementById('toast');
-  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toast-msg').textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
@@ -1587,105 +1561,82 @@ if (loggedUser) updateAuthUI();
 renderProducts();
 updateCartUI();
 
-// ── DEMO LOGIN ────────────────────────────────────────
+// ── DEMO LOGIN ──────────────────────────
 function fillDemo() {
-  document.getElementById('loginUser').value = 'admin';
-  document.getElementById('loginPass').value = 'admin123';
+  document.getElementById('input-login-username').value = 'admin';
+  document.getElementById('input-login-password').value = 'admin123';
 }
 
-// ── CITIES DATA ───────────────────────────────────────
-var citiesData = {"Afghanistan": ["Kabul", "Kandahar", "Herat", "Mazar-i-Sharif"], "Albania": ["Tirana", "Durr\u00ebs", "Vlor\u00eb", "Shkod\u00ebr"], "Algeria": ["Algiers", "Oran", "Constantine", "Annaba"], "Argentina": ["Buenos Aires", "C\u00f3rdoba", "Rosario", "Mendoza"], "Armenia": ["Yerevan", "Gyumri", "Vanadzor"], "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Canberra", "Gold Coast"], "Austria": ["Vienna", "Graz", "Linz", "Salzburg", "Innsbruck"], "Azerbaijan": ["Baku", "Ganja", "Sumqay\u0131t"], "Bahrain": ["Manama", "Riffa", "Muharraq"], "Bangladesh": ["Dhaka", "Chittagong", "Khulna", "Sylhet", "Rajshahi"], "Belarus": ["Minsk", "Homyel", "Vitebsk"], "Belgium": ["Brussels", "Antwerp", "Ghent", "Bruges", "Li\u00e8ge"], "Bolivia": ["Sucre", "La Paz", "Cochabamba", "Santa Cruz"], "Bosnia and Herzegovina": ["Sarajevo", "Banja Luka", "Mostar"], "Brazil": ["S\u00e3o Paulo", "Rio de Janeiro", "Bras\u00edlia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife", "Porto Alegre"], "Bulgaria": ["Sofia", "Plovdiv", "Varna", "Burgas"], "Cambodia": ["Phnom Penh", "Siem Reap", "Sihanoukville"], "Cameroon": ["Yaound\u00e9", "Douala", "Bamenda"], "Canada": ["Toronto", "Montreal", "Vancouver", "Calgary", "Ottawa", "Edmonton", "Winnipeg", "Quebec City"], "Chile": ["Santiago", "Valpara\u00edso", "Concepci\u00f3n", "Antofagasta"], "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Chengdu", "Chongqing", "Wuhan", "Xi'an", "Hangzhou", "Nanjing", "Tianjin"], "Colombia": ["Bogot\u00e1", "Medell\u00edn", "Cali", "Barranquilla", "Cartagena"], "Costa Rica": ["San Jos\u00e9", "Alajuela", "Cartago"], "Croatia": ["Zagreb", "Split", "Rijeka", "Osijek"], "Cuba": ["Havana", "Santiago de Cuba", "Camag\u00fcey"], "Cyprus": ["Nicosia", "Limassol", "Larnaca"], "Czech Republic": ["Prague", "Brno", "Ostrava", "Plze\u0148"], "Denmark": ["Copenhagen", "Aarhus", "Odense", "Aalborg"], "Dominican Republic": ["Santo Domingo", "Santiago", "La Romana"], "Ecuador": ["Quito", "Guayaquil", "Cuenca"], "Egypt": ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan"], "Ethiopia": ["Addis Ababa", "Dire Dawa", "Gondar"], "Finland": ["Helsinki", "Espoo", "Tampere", "Oulu"], "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Bordeaux", "Lille"], "Germany": ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "D\u00fcsseldorf", "Leipzig"], "Ghana": ["Accra", "Kumasi", "Tamale"], "Greece": ["Athens", "Thessaloniki", "Patras", "Heraklion"], "Guatemala": ["Guatemala City", "Quetzaltenango", "Escuintla"], "Hungary": ["Budapest", "Debrecen", "Miskolc", "P\u00e9cs"], "Iceland": ["Reykjavik", "Akureyri"], "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Surat", "Lucknow"], "Indonesia": ["Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang", "Tangerang", "Depok", "Bekasi", "Yogyakarta", "Denpasar"], "Iran": ["Tehran", "Mashhad", "Isfahan", "Karaj", "Shiraz", "Tabriz"], "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil"], "Ireland": ["Dublin", "Cork", "Limerick", "Galway"], "Israel": ["Jerusalem", "Tel Aviv", "Haifa"], "Italy": ["Rome", "Milan", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Venice"], "Jamaica": ["Kingston", "Montego Bay", "Portmore"], "Japan": ["Tokyo", "Osaka", "Yokohama", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kyoto", "Hiroshima"], "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba"], "Kazakhstan": ["Almaty", "Astana", "Shymkent"], "Kenya": ["Nairobi", "Mombasa", "Kisumu", "Nakuru"], "Kuwait": ["Kuwait City", "Hawalli", "Salmiya"], "Latvia": ["Riga", "Daugavpils", "Liep\u0101ja"], "Lebanon": ["Beirut", "Tripoli", "Sidon"], "Lithuania": ["Vilnius", "Kaunas", "Klaip\u0117da"], "Madagascar": ["Antananarivo", "Toamasina", "Antsirabe"], "Malaysia": ["Kuala Lumpur", "George Town", "Johor Bahru", "Ipoh", "Petaling Jaya", "Kota Kinabalu", "Kuching"], "Maldives": ["Mal\u00e9", "Addu City"], "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "Le\u00f3n", "M\u00e9rida", "Canc\u00fan"], "Moldova": ["Chi\u0219in\u0103u", "Tiraspol", "B\u0103l\u021bi"], "Mongolia": ["Ulaanbaatar", "Erdenet", "Darkhan"], "Morocco": ["Casablanca", "Rabat", "Marrakech", "Fez", "Tangier", "Agadir"], "Mozambique": ["Maputo", "Matola", "Beira"], "Myanmar": ["Naypyidaw", "Yangon", "Mandalay"], "Nepal": ["Kathmandu", "Pokhara", "Lalitpur"], "Netherlands": ["Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven"], "New Zealand": ["Auckland", "Wellington", "Christchurch", "Hamilton", "Dunedin"], "Nigeria": ["Lagos", "Abuja", "Kano", "Ibadan", "Port Harcourt"], "Norway": ["Oslo", "Bergen", "Stavanger", "Trondheim"], "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa"], "Pakistan": ["Karachi", "Lahore", "Faisalabad", "Rawalpindi", "Islamabad", "Multan", "Peshawar"], "Palestine": ["Gaza", "Ramallah", "Nablus", "Hebron"], "Panama": ["Panama City", "San Miguelito", "Col\u00f3n"], "Peru": ["Lima", "Arequipa", "Trujillo", "Cusco"], "Philippines": ["Manila", "Quezon City", "Davao", "Cebu City", "Zamboanga", "Makati", "Taguig"], "Poland": ["Warsaw", "Krak\u00f3w", "\u0141\u00f3d\u017a", "Wroc\u0142aw", "Pozna\u0144", "Gda\u0144sk"], "Portugal": ["Lisbon", "Porto", "Braga", "Coimbra", "Faro"], "Qatar": ["Doha", "Al Rayyan", "Al Wakrah"], "Romania": ["Bucharest", "Cluj-Napoca", "Timi\u0219oara", "Ia\u0219i", "Constan\u021ba"], "Russia": ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod"], "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Tabuk"], "Serbia": ["Belgrade", "Novi Sad", "Ni\u0161", "Kragujevac"], "Singapore": ["Singapore"], "Slovakia": ["Bratislava", "Ko\u0161ice", "Pre\u0161ov"], "Slovenia": ["Ljubljana", "Maribor", "Celje"], "South Africa": ["Johannesburg", "Cape Town", "Durban", "Pretoria", "Port Elizabeth"], "South Korea": ["Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Suwon"], "Spain": ["Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "M\u00e1laga", "Bilbao"], "Sri Lanka": ["Colombo", "Kandy", "Galle", "Jaffna"], "Sweden": ["Stockholm", "Gothenburg", "Malm\u00f6", "Uppsala"], "Switzerland": ["Zurich", "Geneva", "Basel", "Bern", "Lausanne"], "Taiwan": ["Taipei", "New Taipei", "Taichung", "Kaohsiung", "Tainan"], "Tanzania": ["Dodoma", "Dar es Salaam", "Mwanza", "Arusha"], "Thailand": ["Bangkok", "Chiang Mai", "Phuket", "Pattaya", "Khon Kaen"], "Tunisia": ["Tunis", "Sfax", "Sousse"], "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Adana", "Antalya"], "Uganda": ["Kampala", "Gulu", "Lira"], "Ukraine": ["Kyiv", "Kharkiv", "Odessa", "Dnipro", "Lviv"], "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah"], "United Kingdom": ["London", "Birmingham", "Manchester", "Glasgow", "Liverpool", "Leeds", "Sheffield", "Edinburgh", "Bristol", "Cardiff"], "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Seattle", "Denver", "Miami", "Atlanta", "Boston", "Las Vegas"], "Uruguay": ["Montevideo", "Salto", "Paysand\u00fa"], "Uzbekistan": ["Tashkent", "Samarkand", "Namangan"], "Venezuela": ["Caracas", "Maracaibo", "Valencia", "Barquisimeto"], "Vietnam": ["Hanoi", "Ho Chi Minh City", "Da Nang", "Haiphong", "Can Tho", "Hue"], "Yemen": ["Sanaa", "Aden", "Taiz"], "Zambia": ["Lusaka", "Kitwe", "Ndola"], "Zimbabwe": ["Harare", "Bulawayo", "Mutare"]};
-
+// ── CITIES DATA ─────────────────────────
+var citiesData = {"Afghanistan": ["Kabul", "Kandahar", "Herat"], "Albania": ["Tirana", "Durr\u00ebs", "Vlor\u00eb"], "Algeria": ["Algiers", "Oran", "Constantine"], "Argentina": ["Buenos Aires", "C\u00f3rdoba", "Rosario", "Mendoza"], "Armenia": ["Yerevan", "Gyumri"], "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Canberra", "Gold Coast"], "Austria": ["Vienna", "Graz", "Linz", "Salzburg", "Innsbruck"], "Azerbaijan": ["Baku", "Ganja"], "Bahrain": ["Manama", "Riffa"], "Bangladesh": ["Dhaka", "Chittagong", "Khulna", "Sylhet"], "Belarus": ["Minsk", "Homyel", "Vitebsk"], "Belgium": ["Brussels", "Antwerp", "Ghent", "Bruges", "Li\u00e8ge"], "Bolivia": ["Sucre", "La Paz", "Cochabamba", "Santa Cruz"], "Brazil": ["S\u00e3o Paulo", "Rio de Janeiro", "Bras\u00edlia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife", "Porto Alegre"], "Bulgaria": ["Sofia", "Plovdiv", "Varna"], "Cambodia": ["Phnom Penh", "Siem Reap"], "Cameroon": ["Yaound\u00e9", "Douala"], "Canada": ["Toronto", "Montreal", "Vancouver", "Calgary", "Ottawa", "Edmonton", "Winnipeg", "Quebec City"], "Chile": ["Santiago", "Valpara\u00edso", "Concepci\u00f3n"], "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Chengdu", "Chongqing", "Wuhan", "Xi'an", "Hangzhou", "Nanjing", "Tianjin"], "Colombia": ["Bogot\u00e1", "Medell\u00edn", "Cali", "Barranquilla", "Cartagena"], "Costa Rica": ["San Jos\u00e9", "Alajuela"], "Croatia": ["Zagreb", "Split", "Rijeka"], "Cuba": ["Havana", "Santiago de Cuba"], "Cyprus": ["Nicosia", "Limassol"], "Czech Republic": ["Prague", "Brno", "Ostrava"], "Denmark": ["Copenhagen", "Aarhus", "Odense"], "Dominican Republic": ["Santo Domingo", "Santiago"], "Ecuador": ["Quito", "Guayaquil", "Cuenca"], "Egypt": ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan"], "Ethiopia": ["Addis Ababa", "Dire Dawa"], "Finland": ["Helsinki", "Espoo", "Tampere"], "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Bordeaux", "Lille"], "Germany": ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "D\u00fcsseldorf", "Leipzig"], "Ghana": ["Accra", "Kumasi"], "Greece": ["Athens", "Thessaloniki", "Patras"], "Guatemala": ["Guatemala City", "Quetzaltenango"], "Hungary": ["Budapest", "Debrecen", "Miskolc"], "Iceland": ["Reykjavik", "Akureyri"], "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Surat", "Lucknow"], "Indonesia": ["Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang", "Tangerang", "Depok", "Bekasi", "Yogyakarta", "Denpasar"], "Iran": ["Tehran", "Mashhad", "Isfahan", "Karaj", "Shiraz"], "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil"], "Ireland": ["Dublin", "Cork", "Limerick", "Galway"], "Israel": ["Jerusalem", "Tel Aviv", "Haifa"], "Italy": ["Rome", "Milan", "Naples", "Turin", "Palermo", "Genoa", "Bologna", "Florence", "Venice"], "Jamaica": ["Kingston", "Montego Bay"], "Japan": ["Tokyo", "Osaka", "Yokohama", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kyoto", "Hiroshima"], "Jordan": ["Amman", "Zarqa", "Irbid"], "Kazakhstan": ["Almaty", "Astana", "Shymkent"], "Kenya": ["Nairobi", "Mombasa", "Kisumu"], "Kuwait": ["Kuwait City", "Hawalli"], "Latvia": ["Riga", "Daugavpils"], "Lebanon": ["Beirut", "Tripoli"], "Lithuania": ["Vilnius", "Kaunas"], "Madagascar": ["Antananarivo", "Toamasina"], "Malaysia": ["Kuala Lumpur", "George Town", "Johor Bahru", "Ipoh", "Petaling Jaya", "Kota Kinabalu", "Kuching"], "Maldives": ["Mal\u00e9"], "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "M\u00e9rida", "Canc\u00fan"], "Moldova": ["Chi\u0219in\u0103u", "Tiraspol"], "Mongolia": ["Ulaanbaatar", "Erdenet"], "Morocco": ["Casablanca", "Rabat", "Marrakech", "Fez", "Tangier"], "Mozambique": ["Maputo", "Matola"], "Myanmar": ["Naypyidaw", "Yangon", "Mandalay"], "Nepal": ["Kathmandu", "Pokhara"], "Netherlands": ["Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven"], "New Zealand": ["Auckland", "Wellington", "Christchurch", "Hamilton"], "Nigeria": ["Lagos", "Abuja", "Kano", "Ibadan", "Port Harcourt"], "Norway": ["Oslo", "Bergen", "Stavanger", "Trondheim"], "Oman": ["Muscat", "Salalah", "Sohar"], "Pakistan": ["Karachi", "Lahore", "Faisalabad", "Rawalpindi", "Islamabad", "Multan", "Peshawar"], "Palestine": ["Gaza", "Ramallah", "Nablus"], "Panama": ["Panama City", "San Miguelito"], "Peru": ["Lima", "Arequipa", "Trujillo", "Cusco"], "Philippines": ["Manila", "Quezon City", "Davao", "Cebu City", "Makati", "Taguig"], "Poland": ["Warsaw", "Krak\u00f3w", "\u0141\u00f3d\u017a", "Wroc\u0142aw", "Pozna\u0144", "Gda\u0144sk"], "Portugal": ["Lisbon", "Porto", "Braga", "Coimbra"], "Qatar": ["Doha", "Al Rayyan"], "Romania": ["Bucharest", "Cluj-Napoca", "Timi\u0219oara", "Ia\u0219i"], "Russia": ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan"], "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam"], "Serbia": ["Belgrade", "Novi Sad", "Ni\u0161"], "Singapore": ["Singapore"], "Slovakia": ["Bratislava", "Ko\u0161ice"], "Slovenia": ["Ljubljana", "Maribor"], "South Africa": ["Johannesburg", "Cape Town", "Durban", "Pretoria"], "South Korea": ["Seoul", "Busan", "Incheon", "Daegu", "Daejeon"], "Spain": ["Madrid", "Barcelona", "Valencia", "Seville", "Zaragoza", "M\u00e1laga", "Bilbao"], "Sri Lanka": ["Colombo", "Kandy", "Galle"], "Sweden": ["Stockholm", "Gothenburg", "Malm\u00f6", "Uppsala"], "Switzerland": ["Zurich", "Geneva", "Basel", "Bern", "Lausanne"], "Taiwan": ["Taipei", "New Taipei", "Taichung", "Kaohsiung"], "Tanzania": ["Dodoma", "Dar es Salaam", "Mwanza"], "Thailand": ["Bangkok", "Chiang Mai", "Phuket", "Pattaya"], "Tunisia": ["Tunis", "Sfax", "Sousse"], "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Adana", "Antalya"], "Uganda": ["Kampala", "Gulu"], "Ukraine": ["Kyiv", "Kharkiv", "Odessa", "Dnipro", "Lviv"], "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah"], "United Kingdom": ["London", "Birmingham", "Manchester", "Glasgow", "Liverpool", "Leeds", "Sheffield", "Edinburgh", "Bristol", "Cardiff"], "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Seattle", "Denver", "Miami", "Atlanta", "Boston", "Las Vegas"], "Uruguay": ["Montevideo", "Salto"], "Uzbekistan": ["Tashkent", "Samarkand", "Namangan"], "Venezuela": ["Caracas", "Maracaibo", "Valencia"], "Vietnam": ["Hanoi", "Ho Chi Minh City", "Da Nang", "Haiphong", "Can Tho"], "Yemen": ["Sanaa", "Aden"], "Zambia": ["Lusaka", "Kitwe"], "Zimbabwe": ["Harare", "Bulawayo"]};
 function updateCities() {
-  var country = document.getElementById('orderCountry').value;
-  var citySelect = document.getElementById('orderCity');
-  citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+  var country = document.getElementById('order-country').value;
+  var sel = document.getElementById('order-city');
+  sel.innerHTML = '<option value="" disabled selected>Select City</option>';
   var cities = citiesData[country] || [];
   for (var i = 0; i < cities.length; i++) {
-    var opt = document.createElement('option');
-    opt.value = cities[i]; opt.textContent = cities[i];
-    citySelect.appendChild(opt);
+    var o = document.createElement('option'); o.value = cities[i]; o.textContent = cities[i]; sel.appendChild(o);
   }
-  if (cities.length === 0) {
-    var opt = document.createElement('option');
-    opt.value = country; opt.textContent = country + ' (Main City)';
-    citySelect.appendChild(opt);
+  if (!cities.length) {
+    var o = document.createElement('option'); o.value = country; o.textContent = country + ' (Main City)'; sel.appendChild(o);
   }
 }
 
-// ── CREDIT CARD FORMATTING ────────────────────────────
+// ── CREDIT CARD FORMAT ──────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  var cardInput = document.getElementById('orderCard');
-  if (!cardInput) return;
-  cardInput.addEventListener('input', function() {
-    var val = this.value.replace(/[^0-9]/g, '').substring(0, 16);
-    var fmt2 = '';
-    for (var i = 0; i < val.length; i++) {
-      if (i > 0 && i % 4 === 0) fmt2 += '-';
-      fmt2 += val[i];
-    }
-    this.value = fmt2;
+  var card = document.getElementById('order-card');
+  if (!card) return;
+  card.addEventListener('input', function() {
+    var v = this.value.replace(/[^0-9]/g,'').substring(0,16), f = '';
+    for (var i=0;i<v.length;i++) { if(i>0&&i%4===0) f+='-'; f+=v[i]; }
+    this.value = f;
   });
-  cardInput.addEventListener('keydown', function(e) {
-    if ([8,9,27,13,46,37,38,39,40].indexOf(e.keyCode) !== -1) return;
-    if ((e.shiftKey || e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105)) e.preventDefault();
+  card.addEventListener('keydown', function(e) {
+    if ([8,9,27,13,46,37,38,39,40].indexOf(e.keyCode)!==-1) return;
+    if ((e.shiftKey||e.keyCode<48||e.keyCode>57)&&(e.keyCode<96||e.keyCode>105)) e.preventDefault();
   });
 });
 
-// ── ORDER MODAL ───────────────────────────────────────
+// ── ORDER MODAL ─────────────────────────
 function openOrderModal() {
   if (!loggedUser) {
     toggleCart();
-    setTimeout(function() { openModal('loginModal'); }, 350);
+    setTimeout(function() { openModal('modal-login'); }, 350);
     showToast('⚠️ Silakan login terlebih dahulu.');
     return;
   }
-  var itemsHtml = '';
-  var grandTotal = 0;
-  for (var i = 0; i < cart.length; i++) {
-    var item = cart[i];
-    grandTotal += item.price * item.qty;
-    itemsHtml += '<div class="order-summary-item">' +
-      '<div class="order-summary-emoji">' + item.emoji + '</div>' +
-      '<div class="order-summary-info">' +
-        '<div class="order-summary-name">' + item.name + '</div>' +
-        '<div class="order-summary-price">' + fmt(item.price) + '</div>' +
-      '</div>' +
-      '<div class="order-summary-qty">x' + item.qty + '</div>' +
-    '</div>';
+  var itemsHtml = '', grandTotal = 0;
+  for (var i=0;i<cart.length;i++) {
+    var item=cart[i]; grandTotal+=item.price*item.qty;
+    itemsHtml+='<div class="order-summary-item" id="order-item-'+i+'">'
+      +'<div class="order-summary-emoji">'+item.emoji+'</div>'
+      +'<div class="order-summary-info">'
+        +'<div class="order-summary-name">'+item.name+'</div>'
+        +'<div class="order-summary-price">'+fmt(item.price)+'</div>'
+      +'</div>'
+      +'<div class="order-summary-qty">x'+item.qty+'</div>'
+    +'</div>';
   }
-  document.getElementById('orderSummaryItems').innerHTML = itemsHtml;
-  document.getElementById('orderTotalAmt').textContent = fmt(grandTotal);
-  document.getElementById('orderModal').classList.add('open');
+  document.getElementById('order-summary-items').innerHTML = itemsHtml;
+  document.getElementById('order-total-amt').textContent = fmt(grandTotal);
+  document.getElementById('modal-order').classList.add('open');
 }
-
 function closeOrderModal() {
-  document.getElementById('orderModal').classList.remove('open');
+  document.getElementById('modal-order').classList.remove('open');
 }
-
 function submitOrder() {
-  var name    = document.getElementById('orderName').value.trim();
-  var country = document.getElementById('orderCountry').value;
-  var city    = document.getElementById('orderCity').value;
-  var card    = document.getElementById('orderCard').value.trim();
-  var month   = document.getElementById('orderMonth').value;
-  var year    = document.getElementById('orderYear').value;
-  if (!name || !country || !city || !card || !month || !year) {
-    alert('Please fill in all fields.');
-    return;
-  }
-  var cardDigits = card.replace(/-/g, '');
-  if (cardDigits.length !== 16) {
-    alert('Credit card must be 16 digits.');
-    return;
-  }
-  closeOrderModal();
-  toggleCart();
-  cart = []; localStorage.setItem('tc', JSON.stringify(cart)); updateCartUI();
-  alert('Thank you for your purchase, ' + name + '! Your order has been placed.');
+  var name    = document.getElementById('order-name').value.trim();
+  var country = document.getElementById('order-country').value;
+  var city    = document.getElementById('order-city').value;
+  var card    = document.getElementById('order-card').value.trim();
+  var month   = document.getElementById('order-month').value;
+  var year    = document.getElementById('order-year').value;
+  if (!name||!country||!city||!card||!month||!year) { alert('Please fill in all fields.'); return; }
+  if (card.replace(/-/g,'').length!==16) { alert('Credit card must be 16 digits.'); return; }
+  closeOrderModal(); toggleCart();
+  cart=[]; localStorage.setItem('tc', JSON.stringify(cart)); updateCartUI();
+  alert('Thank you for your purchase, '+name+'! Your order has been placed.');
 }
-
-// ── CHECKOUT ALIAS ────────────────────────────────────
 function checkout() { openOrderModal(); }
 
 </script>
