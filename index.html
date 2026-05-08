@@ -1503,6 +1503,12 @@ function doLogin() {
   var u = document.getElementById('input-login-username').value.trim();
   var pw = document.getElementById('input-login-password').value;
   if (!u || !pw) { showToast('⚠️ Isi semua field.'); return; }
+  // Demo account
+  if (u === 'admin' && pw === 'admin123') {
+    loggedUser = u; localStorage.setItem('tc_user', u);
+    closeModal('modal-login'); updateAuthUI(); showToast('👋 Selamat datang, admin!'); return;
+  }
+  // Registered users
   var users = JSON.parse(localStorage.getItem('tc_users') || '{}');
   if (users[u] && users[u] === pw) {
     loggedUser = u; localStorage.setItem('tc_user', u);
