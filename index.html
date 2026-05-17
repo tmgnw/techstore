@@ -925,7 +925,7 @@ function addToCart(p, color) {
   });
   saveCart();
   updateCartUI();
-  showToast('✅ Ditambahkan ke keranjang!', 'success');
+  alert('✅ Ditambahkan ke keranjang!');
 }
 
 function changeQty(cartKey, delta) {
@@ -1320,7 +1320,7 @@ function submitOrder() {
   cart = [];
   saveCart();
   updateCartUI();
-  showToast('🎉 Terima kasih ' + name + '! Pesanan Anda telah dibuat.', 'success');
+  alert('🎉 Terima kasih ' + name + '! Pesanan Anda telah dibuat.');
 
   // Reset form
   document.getElementById('order-card').value = '';
